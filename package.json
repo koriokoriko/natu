@@ -1,15 +1,15 @@
 {
   "name": "natsumatsuri-server",
-  "private": true,
   "version": "1.0.0",
-  "description": "SUMMER GAME FES 2026 - Entry Site Server",
+  "private": true,
+  "description": "夏祭りゲーム配信フェス エントリーサイト（ローカルNode.jsサーバー・CSVログ保存）",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.19.0",
-    "csv-parse": "^5.5.0",
+    "express": "^4.19.2",
+    "csv-parse": "^5.5.6",
     "csv-stringify": "^6.5.0"
   }
 }
