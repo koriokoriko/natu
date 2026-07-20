@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>SUMMER GAME FES 2026 - ゲーム配信フェス</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#07070F;--violet:#7C3AED;--violet-lt:#A78BFA;--rose:#F43F5E;
+      --cyan:#22D3EE;--lime:#A3E635;--ink:#E7EAF6;--ink-soft:#98A0C0;
+      --line:rgba(159,168,224,0.16);--glow:rgba(124,58,237,0.55);
+      --glow-cyan:rgba(34,211,238,0.45);--danger:#F43F5E;--shadow:2,3,16;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:"Zen Kaku Gothic New",system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:var(--bg);color:var(--ink);overflow-x:hidden;
+    }
+    body::before{
+      content:"";position:fixed;inset:-40%;z-index:-2;
+      background:
+        radial-gradient(circle at 10% 0%,rgba(124,58,237,0.45),transparent 55%),
+        radial-gradient(circle at 80% 10%,rgba(34,211,238,0.35),transparent 55%),
+        radial-gradient(circle at 20% 80%,rgba(244,63,94,0.35),transparent 55%),
+        linear-gradient(to bottom,#050510,#050514 40%,#050510);
+      opacity:0.9;
+    }
+    #space{position:fixed;inset:0;z-index:-1;display:block}
+    @media (prefers-reduced-motion:reduce){
+      #space{display:none}
+    }
+    .container{max-width:1160px;margin:0 auto;padding:0 clamp(20px,5vw,64px);}
+    .topbar{
+      position:sticky;top:0;z-index:20;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:10px clamp(20px,5vw,40px);
+      background:rgba(0,0,0,0.55);
+      backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--line);
+    }
+    .brand{
+      font-family:"Orbitron",sans-serif;
+      letter-spacing:0.18em;font-size:13px;
+      text-transform:uppercase;color:var(--cyan);
+    }
+    .brand span{color:var(--violet-lt);}
+    .tabs{display:flex;gap:12px;align-items:center;}
+    .tab{
+      font-family:"Orbitron",sans-serif;
+      font-size:12px;letter-spacing:0.12em;text-transform:uppercase;
+      padding:8px 14px;border-radius:999px;
+      border:1px solid transparent;color:var(--ink-soft);
+      cursor:pointer;position:relative;min-height:44px;
+    }
+    .tab::after{
+      content:"";position:absolute;inset:-2px;border-radius:999px;
+      border:1px solid transparent;pointer-events:none;
+    }
+    .tab.active{
+      color:#fff;border-color:var(--violet);
+      box-shadow:0 0 0 1px rgba(124,58,237,0.45),0 0 24px var(--glow);
+      background:radial-gradient(circle at 0 0,rgba(124,58,237,0.35),transparent 60%);
+    }
+    .tab.active::after{
+      border-color:rgba(124,58,237,0.55);
+    }
+    main{padding-bottom:80px;}
+    main>section{display:none;padding-top:32px;}
+    main>section.active{display:block;}
+    h1,h2,h3,h4{font-family:"Zen Kaku Gothic New","Orbitron",sans-serif;}
+    .hero{
+      min-height:clamp(520px,78vh,780px);
+      display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);
+      gap:32px;align-items:center;padding-top:32px;padding-bottom:40px;
+    }
+    @media(max-width:820px){
+      .hero{grid-template-columns:1fr;grid-template-rows:auto auto;}
+      .hero-planet{order:2;margin-top:24px;}
+    }
+    .hero-eyebrow{
+      font-family:"Orbitron",sans-serif;
+      font-size:12px;letter-spacing:0.22em;text-transform:uppercase;
+      color:var(--ink-soft);margin-bottom:12px;
+    }
+    .hero-title{
+      font-size:clamp(28px,4vw,40px);
+      line-height:1.3;margin-bottom:16px;
+    }
+    .hero-title span{
+      background:linear-gradient(120deg,var(--violet-lt),var(--cyan));
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+      font-weight:700;
+    }
+    .hero-sub{
+      font-size:14px;color:var(--ink-soft);margin-bottom:24px;
+    }
+    .hero-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px;}
+    .btn{
+      border-radius:999px;border:1px solid var(--line);
+      padding:10px 18px;font-size:13px;cursor:pointer;
+      background:rgba(255,255,255,0.02);color:var(--ink);
+      display:inline-flex;align-items:center;gap:8px;
+      min-height:48px;
+    }
+    .btn-primary{
+      border-color:var(--violet);
+      background:radial-gradient(circle at 0 0,rgba(124,58,237,0.35),transparent 60%);
+      box-shadow:0 0 0 1px rgba(124,58,237,0.45),0 0 24px var(--glow);
+      color:#fff;
+    }
+    .btn-secondary{
+      border-color:var(--cyan);
+      box-shadow:0 0 0 1px rgba(34,211,238,0.35),0 0 18px var(--glow-cyan);
+    }
+    .hero-meta{
+      display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:12px;margin-bottom:24px;
+    }
+    @media(max-width:720px){
+      .hero-meta{grid-template-columns:repeat(2,minmax(0,1fr));}
+    }
+    .card{
+      background:rgba(255,255,255,0.045);
+      backdrop-filter:blur(12px);
+      border-radius:18px;
+      border:1px solid var(--line);
+      box-shadow:0 18px 40px rgba(var(--shadow),0.55);
+      position:relative;
+    }
+    .card::before{
+      content:"";position:absolute;inset:0;border-radius:inherit;
+      border:1px solid rgba(255,255,255,0.06);
+      mix-blend-mode:screen;pointer-events:none;
+    }
+    .info-card{padding:14px 16px;}
+    .info-label{
+      font-family:"Orbitron",sans-serif;
+      font-size:11px;letter-spacing:0.18em;text-transform:uppercase;
+      color:var(--ink-soft);margin-bottom:6px;
+    }
+    .info-value{font-size:15px;font-weight:600;}
+    .info-sub{font-size:12px;color:var(--ink-soft);}
+    .steps{
+      margin-top:12px;margin-bottom:24px;
+      display:flex;flex-wrap:wrap;gap:12px;
+    }
+    .step-card{flex:1 1 180px;padding:14px 16px;}
+    .step-badge{
+      width:26px;height:26px;border-radius:999px;
+      display:flex;align-items:center;justify-content:center;
+      font-family:"Orbitron",sans-serif;font-size:12px;
+      background:radial-gradient(circle,var(--cyan),var(--violet));
+      box-shadow:0 0 18px var(--glow-cyan);
+      margin-bottom:8px;color:#fff;
+    }
+    .step-title{font-size:14px;font-weight:600;margin-bottom:4px;}
+    .step-text{font-size:12px;color:var(--ink-soft);}
+    .cta-band{
+      margin-top:8px;padding:16px 18px;
+      border-radius:20px;border:1px solid rgba(124,58,237,0.7);
+      box-shadow:0 0 0 1px rgba(124,58,237,0.45),0 0 28px var(--glow);
+      background:linear-gradient(135deg,rgba(124,58,237,0.35),rgba(34,211,238,0.18));
+      display:flex;flex-wrap:wrap;align-items:center;gap:12px;
+    }
+    .cta-band h3{font-size:15px;margin-right:auto;}
+    .hero-planet{
+      position:relative;min-height:260px;
+      display:flex;align-items:center;justify-content:center;
+      perspective:900px;
+    }
+    .planet-orbit-wrap{
+      position:relative;width:260px;height:260px;
+      transform:translate3d(var(--px,0px),var(--py,0px),0);
+      transition:transform 0.12s ease-out;
+    }
+    @media (prefers-reduced-motion:reduce){
+      .planet-orbit-wrap{transition:none;transform:none;}
+    }
+    .planet-core{
+      position:absolute;inset:40px;
+      border-radius:50%;
+      background:
+        radial-gradient(circle at 30% 20%,rgba(255,255,255,0.9),rgba(124,58,237,0.2)),
+        radial-gradient(circle at 70% 80%,rgba(34,211,238,0.4),rgba(7,7,15,1));
+      box-shadow:
+        0 0 40px rgba(124,58,237,0.8),
+        0 0 80px rgba(34,211,238,0.6),
+        inset 0 0 40px rgba(0,0,0,0.8);
+      animation:planet-bob 9s ease-in-out infinite;
+    }
+    .planet-core::after{
+      content:"";position:absolute;inset:18%;
+      border-radius:50%;
+      box-shadow:0 0 40px rgba(244,63,94,0.45);
+      border:1px solid rgba(244,63,94,0.35);
+    }
+    .planet-ring{
+      position:absolute;inset:0;
+      display:flex;align-items:center;justify-content:center;
+      transform:rotateX(74deg);
+    }
+    .planet-ring::before{
+      content:"";width:100%;height:100%;
+      border-radius:50%;
+      border:2px solid rgba(159,168,224,0.4);
+      box-shadow:0 0 40px rgba(159,168,224,0.6);
+    }
+    .planet-satellite{
+      position:absolute;width:40px;height:40px;border-radius:50%;
+      background:radial-gradient(circle at 30% 20%,#fff,rgba(34,211,238,0.4));
+      box-shadow:0 0 20px rgba(34,211,238,0.8);
+      animation:orbit 14s linear infinite;
+      transform-origin:50% 160px;
+    }
+    @keyframes orbit{
+      0%{transform:rotate(0deg) translateY(-160px);}
+      100%{transform:rotate(360deg) translateY(-160px);}
+    }
+    @keyframes planet-bob{
+      0%,100%{transform:translateY(0);}
+      50%{transform:translateY(-10px);}
+    }
+    @media (prefers-reduced-motion:reduce){
+      .planet-core,.planet-satellite{animation:none;}
+    }
+    form{
+      width:100%;margin-top:8px;
+    }
+    fieldset{
+      border:none;margin-bottom:18px;
+      padding:16px 18px;border-radius:18px;
+      background:rgba(255,255,255,0.045);
+      backdrop-filter:blur(12px);
+      border:1px solid var(--line);
+      position:relative;
+    }
+    legend{
+      padding:0 8px;font-size:13px;font-weight:600;
+      display:flex;align-items:center;gap:8px;
+    }
+    .legend-badge{
+      width:26px;height:26px;border-radius:999px;
+      display:flex;align-items:center;justify-content:center;
+      font-family:"Orbitron",sans-serif;font-size:12px;
+      background:radial-gradient(circle,var(--cyan),var(--violet));
+      box-shadow:0 0 18px var(--glow-cyan);
+      color:#fff;
+    }
+    .form-grid{
+      margin-top:12px;
+      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;
+    }
+    @media(max-width:720px){
+      .form-grid{grid-template-columns:1fr;}
+    }
+    .form-row{display:flex;flex-direction:column;gap:4px;}
+    label{
+      font-size:12px;color:var(--ink-soft);
+      display:inline-flex;align-items:center;gap:4px;
+    }
+    .required-mark{color:var(--danger);}
+    input,textarea{
+      border-radius:10px;border:1px solid var(--line);
+      padding:8px 10px;font-size:13px;
+      background:rgba(7,7,15,0.9);color:var(--ink);
+      outline:none;
+    }
+    input[type="url"],input[type="tel"],input[type="time"],input[type="date"],input[type="color"]{
+      color-scheme:dark;
+    }
+    textarea{min-height:90px;resize:vertical;}
+    input:focus,textarea:focus{
+      border-color:var(--violet);
+      box-shadow:0 0 0 1px rgba(124,58,237,0.45),0 0 18px var(--glow);
+    }
+    .form-actions{
+      margin-top:12px;display:flex;flex-wrap:wrap;gap:10px;
+    }
+    .msg-area{
+      margin-bottom:10px;font-size:13px;color:var(--ink-soft);
+      min-height:20px;
+    }
+    .msg-area.error{color:var(--danger);}
+    .msg-area.success{color:var(--lime);}
+    .tt-wrapper{
+      margin-top:12px;
+      overflow-x:auto;
+      padding-bottom:12px;
+    }
+    table.tt{
+      border-collapse:collapse;width:100%;min-width:720px;
+      font-size:12px;
+    }
+    .tt thead th{
+      padding:8px 6px;border-bottom:1px solid var(--line);
+      text-align:center;font-family:"Orbitron",sans-serif;
+      letter-spacing:0.12em;text-transform:uppercase;
+      color:var(--ink-soft);
+      background:rgba(7,7,15,0.9);
+      position:sticky;top:0;z-index:5;
+    }
+    .tt tbody td{
+      border-bottom:1px solid rgba(159,168,224,0.12);
+      border-right:1px solid rgba(159,168,224,0.08);
+      height:32px;min-width:80px;
+      position:relative;
+    }
+    .tt-time-cell{
+      width:70px;min-width:70px;
+      text-align:right;padding-right:6px;
+      font-family:"Orbitron",sans-serif;
+      color:var(--ink-soft);
+      background:rgba(7,7,15,0.95);
+      position:sticky;left:0;z-index:4;
+    }
+    .tt-slot-empty{background:rgba(7,7,15,0.7);}
+    .tt-block{
+      position:absolute;inset:3px;
+      border-radius:12px;
+      display:flex;flex-direction:column;
+      align-items:center;justify-content:center;
+      text-align:center;color:#fff;
+      padding:6px 8px;
+      cursor:pointer;
+      box-shadow:0 18px 40px rgba(var(--shadow),0.75);
+      backdrop-filter:blur(9px) saturate(1.35);
+    }
+    .tt-block::before{
+      content:"";position:absolute;top:4px;left:50%;
+      transform:translateX(-50%);
+      width:10px;height:10px;border-radius:999px;
+      background:radial-gradient(circle,var(--cyan),rgba(34,211,238,0.1));
+      box-shadow:0 0 12px rgba(34,211,238,0.8);
+    }
+    .tt-avatar-top{
+      display:block;margin-bottom:4px;min-height:48px;
+    }
+    .tt-avatar-img{
+      width:48px;height:48px;border-radius:999px;
+      border:2px solid #fff;
+      box-shadow:0 0 16px rgba(0,0,0,0.8);
+      object-fit:cover;
+    }
+    .tt-block .lantern{
+      font-size:14px;font-weight:700;margin-bottom:2px;text-shadow:0 0 6px rgba(0,0,0,0.8);
+    }
+    .tt-block .time-range{
+      font-family:"Orbitron",sans-serif;font-size:12px;margin-bottom:4px;
+    }
+    .tt-block .yt-link{
+      display:inline-flex;align-items:center;gap:4px;
+      font-size:13px;color:#fff;text-decoration:underline;
+      margin-bottom:4px;
+    }
+    .tt-block .yt-link svg{width:14px;height:14px;}
+    .tt-block .bio-preview{
+      font-size:11px;line-height:1.4;
+      display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+    .tt-block[role="button"]{outline:none;}
+    .tt-block:focus-visible{
+      box-shadow:0 0 0 2px rgba(124,58,237,0.8),0 0 24px var(--glow);
+    }
+    .tt-block a{color:#fff;}
+    .tt-block a:focus-visible{
+      outline:2px solid var(--cyan);outline-offset:2px;
+    }
+    .tt-empty-state{
+      margin-top:16px;font-size:13px;color:var(--ink-soft);
+      display:flex;align-items:center;gap:8px;
+    }
+    .tt-empty-state span{font-size:18px;}
+    .modal-backdrop{
+      position:fixed;inset:0;background:rgba(0,0,0,0.65);
+      display:flex;align-items:center;justify-content:center;
+      z-index:40;
+    }
+    .modal-panel{
+      max-width:520px;width:calc(100% - 40px);
+      background:rgba(255,255,255,0.045);
+      backdrop-filter:blur(16px);
+      border-radius:20px;border:1px solid var(--line);
+      padding:18px 20px;
+      box-shadow:0 24px 60px rgba(var(--shadow),0.85);
+      position:relative;
+    }
+    .modal-close{
+      position:absolute;top:10px;right:10px;
+      border-radius:999px;border:1px solid var(--line);
+      width:32px;height:32px;
+      display:flex;align-items:center;justify-content:center;
+      background:rgba(7,7,15,0.9);cursor:pointer;
+      color:var(--ink-soft);
+    }
+    .modal-title{font-size:16px;font-weight:700;margin-bottom:6px;}
+    .modal-meta{font-size:13px;color:var(--ink-soft);margin-bottom:12px;}
+    .modal-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+    .modal-btn{
+      border-radius:999px;border:1px solid var(--line);
+      padding:8px 12px;font-size:13px;cursor:pointer;
+      background:rgba(7,7,15,0.9);color:var(--ink);
+      display:inline-flex;align-items:center;gap:6px;
+      min-height:40px;
+    }
+    .modal-btn-danger{border-color:var(--danger);color:var(--danger);}
+    .modal-body{font-size:13px;white-space:pre-wrap;color:var(--ink);}
+    .edit-card{
+      margin-top:12px;padding:16px 18px;
+      border-radius:18px;border:1px solid var(--line);
+      background:rgba(255,255,255,0.045);
+      backdrop-filter:blur(12px);
+    }
+    .edit-actions{
+      margin-top:12px;display:flex;flex-wrap:wrap;gap:10px;
+    }
+    .edit-danger-zone{
+      margin-top:10px;padding-top:10px;border-top:1px dashed rgba(244,63,94,0.6);
+    }
+    .btn-danger{
+      border-color:var(--danger);
+      color:#fff;
+      background:radial-gradient(circle at 0 0,rgba(244,63,94,0.45),transparent 60%);
+      box-shadow:0 0 0 1px rgba(244,63,94,0.6),0 0 24px rgba(244,63,94,0.7);
+    }
+    .btn-ghost{
+      border-color:var(--line);
+      background:rgba(7,7,15,0.9);
+      color:var(--ink-soft);
+    }
+    .login-grid{
+      display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:12px;margin-top:10px;
+    }
+    @media(max-width:720px){
+      .login-grid{grid-template-columns:1fr;}
+    }
+    .a11y-status{
+      margin-bottom:8px;font-size:12px;color:var(--ink-soft);
+    }
+    .tab,.btn,.tt-block,.modal-btn,.modal-close{
+      touch-action:manipulation;
+    }
+  </style>
+</head>
+<body>
+<canvas id="space"></canvas>
+
+<header class="topbar">
+  <div class="brand">SGF/<span>2026</span></div>
+  <nav class="tabs" aria-label="Main navigation">
+    <button class="tab active" data-view="home" type="button">HOME</button>
+    <button class="tab" data-view="entry" type="button">ENTRY</button>
+    <button class="tab" data-view="timetable" type="button">TIMETABLE</button>
+    <button class="tab" data-view="edit" type="button">EDIT</button>
+  </nav>
+</header>
+
+<main class="container">
+  <!-- HOME -->
+  <section id="view-home" class="active">
+    <div class="hero" id="hero">
+      <div>
+        <div class="hero-eyebrow">SUMMER GAME STREAMING FES 2026</div>
+        <h1 class="hero-title">真夏の<span>ゲーム配信</span>フェス、宇宙ではじまる</h1>
+        <p class="hero-sub">
+          配信者が集うオンライン夏祭り。あなたのチャンネルも、タイムテーブルに並べてみませんか？
+          登録は約1分、好きな時間帯で参加できます。
+        </p>
+        <div class="hero-ctas">
+          <button class="btn btn-primary" type="button" data-goto="entry">
+            登録フォームへ
+          </button>
+          <button class="btn btn-secondary" type="button" data-goto="timetable">
+            タイムテーブルを見る
+          </button>
+        </div>
+
+        <div class="hero-meta">
+          <div class="card info-card">
+            <div class="info-label">DATE</div>
+            <div class="info-value">7/20 – 7/21</div>
+            <div class="info-sub">2日間開催</div>
+          </div>
+          <div class="card info-card">
+            <div class="info-label">TIME</div>
+            <div class="info-value">8:00 – 20:00</div>
+            <div class="info-sub">好きな枠でOK</div>
+          </div>
+          <div class="card info-card">
+            <div class="info-label">PLACE</div>
+            <div class="info-value">ONLINE</div>
+            <div class="info-sub">YouTube / Twitch 配信</div>
+          </div>
+          <div class="card info-card">
+            <div class="info-label">ENTRY</div>
+            <div class="info-value">無料</div>
+            <div class="info-sub">登録は約1分</div>
+          </div>
+        </div>
+
+        <div class="steps">
+          <div class="card step-card">
+            <div class="step-badge">1</div>
+            <div class="step-title">登録フォームで申込</div>
+            <div class="step-text">マイIDとPINを決めて、配信内容と希望時間を入力します。</div>
+          </div>
+          <div class="card step-card">
+            <div class="step-badge">2</div>
+            <div class="step-title">タイムテーブルに掲載</div>
+            <div class="step-text">あなたのチャンネルが宇宙ステージの一枠として表示されます。</div>
+          </div>
+          <div class="card step-card">
+            <div class="step-badge">3</div>
+            <div class="step-title">当日配信</div>
+            <div class="step-text">決めた時間に配信開始。フェス参加者と一緒に盛り上がりましょう。</div>
+          </div>
+        </div>
+
+        <div class="cta-band">
+          <h3>準備はいい？ 宇宙一のフェスへ。</h3>
+          <button class="btn btn-primary" type="button" data-goto="entry">
+            登録フォームへ進む
+          </button>
+        </div>
+      </div>
+
+      <div class="hero-planet">
+        <div class="planet-orbit-wrap" id="planet-orbit">
+          <div class="planet-core"></div>
+          <div class="planet-ring"></div>
+          <div class="planet-satellite"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENTRY -->
+  <section id="view-entry">
+    <div class="card" style="padding:18px 20px;">
+      <div class="a11y-status" role="status" aria-live="polite" id="entry-msg"></div>
+      <form id="entry-form">
+        <fieldset>
+          <legend>
+            <span class="legend-badge">1</span>
+            ログイン情報
+          </legend>
+          <div class="form-grid">
+            <div class="form-row">
+              <label for="f-id">マイID<span class="required-mark">*</span></label>
+              <input id="f-id" name="id" required>
+            </div>
+            <div class="form-row">
+              <label for="f-pin">編集用PIN<span class="required-mark">*</span></label>
+              <input id="f-pin" name="pin" type="tel" inputmode="numeric" pattern="\d{4}" maxlength="4" required>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>
+            <span class="legend-badge">2</span>
+            配信者プロフィール
+          </legend>
+          <div class="form-grid">
+            <div class="form-row">
+              <label for="f-nickname">ニックネーム<span class="required-mark">*</span></label>
+              <input id="f-nickname" name="nickname" required>
+            </div>
+            <div class="form-row">
+              <label for="f-youtube">YouTubeチャンネル名<span class="required-mark">*</span></label>
+              <input id="f-youtube" name="youtube" required>
+            </div>
+            <div class="form-row">
+              <label for="f-youtube-url">YouTube URL<span class="required-mark">*</span></label>
+              <input id="f-youtube-url" name="youtubeUrl" type="url" required>
+            </div>
+            <div class="form-row">
+              <label for="f-sns">X / Twitch などのURL</label>
+              <input id="f-sns" name="sns" type="url">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>
+            <span class="legend-badge">3</span>
+            配信日時
+          </legend>
+          <div class="form-grid">
+            <div class="form-row">
+              <label for="f-date">配信希望日<span class="required-mark">*</span></label>
+              <input id="f-date" name="date" type="date" required>
+            </div>
+            <div class="form-row">
+              <label for="f-start">開始時刻<span class="required-mark">*</span></label>
+              <input id="f-start" name="start" type="time" min="08:00" max="20:00" required>
+            </div>
+            <div class="form-row">
+              <label for="f-end">終了時刻<span class="required-mark">*</span></label>
+              <input id="f-end" name="end" type="time" min="08:00" max="20:00" required>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>
+            <span class="legend-badge">4</span>
+            配信内容・表示
+          </legend>
+          <div class="form-grid">
+            <div class="form-row" style="grid-column:1/-1;">
+              <label for="f-bio">自己紹介・配信内容<span class="required-mark">*</span></label>
+              <textarea id="f-bio" name="bio" required></textarea>
+            </div>
+            <div class="form-row">
+              <label for="f-color">タイムテーブルの枠の色</label>
+              <input id="f-color" name="color" type="color" value="#7C3AED">
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">この内容で登録する</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- TIMETABLE -->
+  <section id="view-timetable">
+    <div class="card" style="padding:18px 20px;">
+      <div class="a11y-status" role="status" aria-live="polite" id="tt-msg"></div>
+      <div class="tt-wrapper" id="tt-wrapper"></div>
+      <div class="tt-empty-state" id="tt-empty" hidden>
+        <span>🛰️</span>
+        <p>まだエントリーがありません。登録フォームから申し込むと、ここにあなたの配信枠が表示されます。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDIT -->
+  <section id="view-edit">
+    <div class="card" style="padding:18px 20px;">
+      <div class="a11y-status" role="status" aria-live="polite" id="edit-msg"></div>
+      <form id="login-form">
+        <fieldset>
+          <legend>
+            <span class="legend-badge">LOGIN</span>
+            エントリー編集ログイン
+          </legend>
+          <div class="login-grid">
+            <div class="form-row">
+              <label for="login-id">マイID<span class="required-mark">*</span></label>
+              <input id="login-id" required>
+            </div>
+            <div class="form-row">
+              <label for="login-pin">編集用PIN<span class="required-mark">*</span></label>
+              <input id="login-pin" type="tel" inputmode="numeric" pattern="\d{4}" maxlength="4" required>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary" type="submit">ログイン</button>
+          </div>
+        </fieldset>
+      </form>
+
+      <div id="edit-card" class="edit-card" hidden>
+        <h3 style="font-size:15px;margin-bottom:8px;">エントリー内容の編集</h3>
+        <form id="edit-form">
+          <div class="form-grid">
+            <div class="form-row">
+              <label for="edit-youtube">YouTubeチャンネル名<span class="required-mark">*</span></label>
+              <input id="edit-youtube" required>
+            </div>
+            <div class="form-row">
+              <label for="edit-youtube-url">YouTube URL<span class="required-mark">*</span></label>
+              <input id="edit-youtube-url" type="url" required>
+            </div>
+            <div class="form-row" style="grid-column:1/-1;">
+              <label for="edit-bio">自己紹介・配信内容<span class="required-mark">*</span></label>
+              <textarea id="edit-bio" required></textarea>
+            </div>
+          </div>
+          <div class="edit-actions">
+            <button class="btn btn-primary" type="submit">変更を保存</button>
+            <button class="btn btn-ghost" type="button" id="logout-btn">ログアウト</button>
+          </div>
+          <div class="edit-danger-zone">
+            <button class="btn btn-danger" type="button" id="delete-btn">このエントリーを削除</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- MODAL -->
+<div id="tt-modal" hidden>
+  <div class="modal-backdrop" data-close="1">
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="tt-modal-title">
+      <button class="modal-close" type="button" data-close="1" aria-label="閉じる">×</button>
+      <div id="tt-modal-content"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- starfield ---
+  (function(){
+    const canvas=document.getElementById('space');
+    if(!canvas) return;
+    const ctx=canvas.getContext('2d');
+    let stars=[],w=0,h=0,animId=null,boost=0;
+    const maxBase=320;
+    const prefersReduced=window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+    function resize(){
+      w=canvas.width=window.innerWidth;
+      h=canvas.height=window.innerHeight;
+      const count=Math.min(maxBase,Math.floor((w*h)/12000));
+      stars=[];
+      for(let i=0;i<count;i++){
+        stars.push({
+          x:(Math.random()-0.5)*w*0.6,
+          y:(Math.random()-0.5)*h*0.6,
+          z:Math.random()*160+128,
+          px:0,py:0,color:pickColor()
+        });
+      }
+    }
+    function pickColor(){
+      const r=Math.random();
+      if(r<0.4) return 'rgba(255,255,255,0.9)';
+      if(r<0.6) return 'rgba(124,58,237,0.9)';
+      if(r<0.8) return 'rgba(34,211,238,0.9)';
+      return 'rgba(244,63,94,0.9)';
+    }
+    function step(){
+      ctx.fillStyle='rgba(7,7,15,0.32)';
+      ctx.fillRect(0,0,w,h);
+      const cx=w/2,cy=h/2;
+      const speedBase=0.6+boost;
+      boost*=0.96;
+      for(const s of stars){
+        s.z-=speedBase;
+        if(s.z<10){
+          s.z=Math.random()*160+128;
+          s.x=(Math.random()-0.5)*w*0.6;
+          s.y=(Math.random()-0.5)*h*0.6;
+          s.px=cx; s.py=cy;
+        }
+        const k=128/s.z;
+        const sx=cx+s.x*k;
+        const sy=cy+s.y*k;
+        ctx.beginPath();
+        ctx.strokeStyle=s.color;
+        ctx.lineWidth=1.2;
+        ctx.moveTo(s.px,s.py);
+        ctx.lineTo(sx,sy);
+        ctx.stroke();
+        s.px=sx; s.py=sy;
+      }
+      animId=requestAnimationFrame(step);
+    }
+    function start(){
+      if(prefersReduced){
+        resize();
+        ctx.fillStyle='rgba(255,255,255,0.8)';
+        for(const s of stars){
+          const cx=w/2,cy=h/2;
+          const k=128/s.z;
+          const sx=cx+s.x*k;
+          const sy=cy+s.y*k;
+          ctx.fillRect(sx,sy,1.5,1.5);
+        }
+        return;
+      }
+      resize();
+      if(animId) cancelAnimationFrame(animId);
+      animId=requestAnimationFrame(step);
+    }
+    document.addEventListener('visibilitychange',()=>{
+      if(document.hidden){
+        if(animId) cancelAnimationFrame(animId);
+        animId=null;
+      }else{
+        if(!prefersReduced) start();
+      }
+    });
+    window.addEventListener('resize',()=>{start();});
+    start();
+    window.__warp=function(){boost+=2.5;};
+  })();
+
+  // --- helpers ---
+  function esc(s){
+    return String(s||'').replace(/[&<>"']/g,function(c){
+      switch(c){
+        case '&':return '&amp;';
+        case '<':return '&lt;';
+        case '>':return '&gt;';
+        case '"':return '&quot;';
+        case "'":return '&#39;';
+      }
+    });
+  }
+  function safeUrl(u){
+    const s=String(u||'').trim();
+    return /^https?:\/\//i.test(s)?s:'';
+  }
+  function shadeColor(hex,percent){
+    let h=hex.replace('#','');
+    if(h.length===3) h=h.split('').map(c=>c+c).join('');
+    const num=parseInt(h,16);
+    let r=(num>>16)&255,g=(num>>8)&255,b=num&255;
+    const p=percent/100;
+    r=Math.min(255,Math.max(0,r+255*p));
+    g=Math.min(255,Math.max(0,g+255*p));
+    b=Math.min(255,Math.max(0,b+255*p));
+    return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+  }
+  function hexToRgba(hex,alpha){
+    let h=hex.replace('#','');
+    if(h.length===3) h=h.split('').map(c=>c+c).join('');
+    const num=parseInt(h,16);
+    const r=(num>>16)&255,g=(num>>8)&255,b=num&255;
+    return 'rgba('+r+','+g+','+b+','+alpha+')';
+  }
+  function timeToMinutes(t){
+    const [hh,mm]=String(t||'').split(':').map(Number);
+    if(isNaN(hh)||isNaN(mm)) return 0;
+    return hh*60+mm;
+  }
+  function minutesToTime(m){
+    const hh=String(Math.floor(m/60)).padStart(2,'0');
+    const mm=String(m%60).padStart(2,'0');
+    return hh+':'+mm;
+  }
+
+  const YT_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#FF0000" d="M21.8 8.001s-.2-1.4-.8-2c-.8-.9-1.7-.9-2.1-1C15.9 4.8 12 4.8 12 4.8h0s-3.9 0-6.9.2c-.4.1-1.3.1-2.1 1-.6.6-.8 2-.8 2S2 9.6 2 11.2v1.6c0 1.6.2 3.2.2 3.2s.2 1.4.8 2c.8.9 1.9.9 2.4 1 1.8.2 6.6.2 6.6.2s3.9 0 6.9-.2c.4-.1 1.3-.1 2.1-1 .6-.6.8-2 .8-2s.2-1.6.2-3.2v-1.6c0-1.6-.2-3.2-.2-3.2z"/><path fill="#fff" d="M10 9.5v5l4.5-2.5z"/></svg>';
+
+  // --- routing ---
+  (function(){
+    const VIEWS=['home','entry','timetable','edit'];
+    const tabs=document.querySelectorAll('.tab[data-view]');
+    const sections={};
+    VIEWS.forEach(v=>{
+      sections[v]=document.getElementById('view-'+v);
+    });
+    function setView(v){
+      if(!VIEWS.includes(v)) return;
+      tabs.forEach(t=>{
+        t.classList.toggle('active',t.dataset.view===v);
+      });
+      Object.keys(sections).forEach(k=>{
+        sections[k].classList.toggle('active',k===v);
+      });
+      if(v==='timetable'){
+        renderTimetable();
+      }
+      const top=document.querySelector('main');
+      if(top) top.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+    tabs.forEach(t=>{
+      t.addEventListener('click',()=>{
+        const v=t.dataset.view;
+        if(!VIEWS.includes(v)) return;
+        history.replaceState(null,'','#'+v);
+        setView(v);
+      });
+    });
+    document.querySelectorAll('[data-goto]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const v=btn.getAttribute('data-goto');
+        const tab=document.querySelector('.tab[data-view="'+v+'"]');
+        if(tab) tab.click();
+      });
+    });
+    function applyHash(){
+      const h=location.hash.replace('#','')||'home';
+      if(VIEWS.includes(h)){
+        setView(h);
+      }else{
+        setView('home');
+      }
+    }
+    window.addEventListener('hashchange',applyHash);
+    applyHash();
+  })();
+
+  // --- hero parallax ---
+  (function(){
+    const hero=document.getElementById('hero');
+    const orbit=document.getElementById('planet-orbit');
+    const prefersReduced=window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    if(!hero || !orbit || prefersReduced) return;
+    hero.addEventListener('pointermove',e=>{
+      const rect=hero.getBoundingClientRect();
+      const x=(e.clientX-rect.left)/rect.width-0.5;
+      const y=(e.clientY-rect.top)/rect.height-0.5;
+      orbit.style.setProperty('--px', (x*18)+'px');
+      orbit.style.setProperty('--py', (y*12)+'px');
+    });
+  })();
+
+  // --- entry form ---
+  (function(){
+    const form=document.getElementById('entry-form');
+    const msg=document.getElementById('entry-msg');
+    if(!form) return;
+    function showMsg(text,type){
+      msg.textContent=text||'';
+      msg.classList.remove('error','success');
+      if(type) msg.classList.add(type);
+    }
+    form.addEventListener('submit',async e=>{
+      e.preventDefault();
+      const id=form.id.value.trim();
+      const pin=form.pin.value.trim();
+      const nickname=form.nickname.value.trim();
+      const youtube=form.youtube.value.trim();
+      const youtubeUrl=form.youtubeUrl.value.trim();
+      const sns=form.sns.value.trim();
+      const date=form.date.value;
+      const start=form.start.value;
+      const end=form.end.value;
+      const bio=form.bio.value.trim();
+      const color=form.color.value||'#7C3AED';
+
+      if(!pin || !/^\d{4}$/.test(pin)){
+        showMsg('PINは4桁の数字で入力してください。', 'error');
+        return;
+      }
+      if(!youtube){
+        showMsg('YouTubeチャンネル名は必須です。', 'error');
+        return;
+      }
+      if(!/^https?:\/\//i.test(youtubeUrl)){
+        showMsg('YouTube URLは https:// から始まる正しいURLを入力してください。', 'error');
+        return;
+      }
+      if(!bio){
+        showMsg('自己紹介・配信内容は必須です。', 'error');
+        return;
+      }
+      if(!date || !start || !end || start>=end){
+        showMsg('日時が正しくありません。', 'error');
+        return;
+      }
+      if(start<'08:00' || end>'20:00'){
+        showMsg('配信時間は8:00〜20:00の範囲で入力してください。', 'error');
+        return;
+      }
+
+      try{
+        const res=await fetch('/api/entries',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            id,pin,nickname,youtube,youtubeUrl,sns,date,start,end,bio,color
+          })
+        });
+        const data=await res.json();
+        if(!res.ok){
+          showMsg(data.error||'エラーが発生しました。', 'error');
+          return;
+        }
+        showMsg('登録が完了しました。マイIDとPINは忘れないように控えておいてください。','success');
+        if(window.__warp) window.__warp();
+        form.reset();
+        form.color.value='#7C3AED';
+      }catch(err){
+        showMsg('通信エラーが発生しました。', 'error');
+      }
+    });
+  })();
+
+  // --- timetable ---
+  let ttById={};
+  async function renderTimetable(){
+    const wrapper=document.getElementById('tt-wrapper');
+    const msg=document.getElementById('tt-msg');
+    const empty=document.getElementById('tt-empty');
+    if(!wrapper) return;
+    wrapper.innerHTML='';
+    ttById={};
+    function showMsg(text){msg.textContent=text||'';}
+    try{
+      const res=await fetch('/api/entries');
+      const entries=await res.json();
+      if(!Array.isArray(entries) || entries.length===0){
+        empty.hidden=false;
+        showMsg('');
+        return;
+      }
+      empty.hidden=true;
+      entries.forEach(e=>{ttById[e.id]=e;});
+      const byDate={};
+      entries.forEach(e=>{
+        if(!e.date) return;
+        if(!byDate[e.date]) byDate[e.date]=[];
+        byDate[e.date].push(e);
+      });
+      const dates=Object.keys(byDate).sort();
+      const startMin=8*60,endMin=20*60;
+      const slots=[];
+      for(let m=startMin;m<endMin;m+=30) slots.push(m);
+
+      const table=document.createElement('table');
+      table.className='tt';
+      const thead=document.createElement('thead');
+      const trHead=document.createElement('tr');
+      const thTime=document.createElement('th');
+      thTime.textContent='TIME';
+      trHead.appendChild(thTime);
+      dates.forEach(d=>{
+        const dayEntries=byDate[d];
+        const lanes=assignLanes(dayEntries);
+        const th=document.createElement('th');
+        th.colSpan=lanes.length;
+        const label=document.createElement('span');
+        const dt=new Date(d);
+        const md=(dt.getMonth()+1)+'/'+dt.getDate();
+        label.textContent=md;
+        th.appendChild(label);
+        trHead.appendChild(th);
+      });
+      thead.appendChild(trHead);
+      table.appendChild(thead);
+
+      const tbody=document.createElement('tbody');
+      dates.forEach(d=>{
+        const dayEntries=byDate[d];
+        const lanes=assignLanes(dayEntries);
+        dayEntries.forEach(e=>{e.__lane=lanes.findIndex(l=>l.includes(e));});
+      });
+
+      for(const m of slots){
+        const tr=document.createElement('tr');
+        const tdTime=document.createElement('td');
+        tdTime.className='tt-time-cell';
+        tdTime.textContent=minutesToTime(m);
+        tr.appendChild(tdTime);
+
+        dates.forEach(d=>{
+          const dayEntries=byDate[d];
+          const lanes=assignLanes(dayEntries);
+          lanes.forEach((lane,laneIndex)=>{
+            const cell=document.createElement('td');
+            cell.className='tt-slot-empty';
+            const entry=lane.find(e=>{
+              const s=timeToMinutes(e.start);
+              const eMin=timeToMinutes(e.end);
+              return m===s;
+            });
+            if(entry){
+              const s=timeToMinutes(entry.start);
+              const eMin=timeToMinutes(entry.end);
+              const span=Math.max(1,(eMin-s)/30);
+              cell.rowSpan=span;
+              const color=entry.color||'#7C3AED';
+              const bg=hexToRgba(color,0.30);
+              const dark=shadeColor(color,-40);
+              cell.style.background='linear-gradient(150deg,'+bg+','+hexToRgba(dark,0.16)+')';
+              cell.style.border='1px solid '+hexToRgba(color,0.6);
+              const block=document.createElement('div');
+              block.className='tt-block';
+              block.setAttribute('role','button');
+              block.setAttribute('tabindex','0');
+              block.title=entry.bio||'';
+              const avatarTop=document.createElement('span');
+              avatarTop.className='tt-avatar-top';
+              const ytSafe=safeUrl(entry.youtubeUrl);
+              if(ytSafe){
+                avatarTop.dataset.yt=ytSafe;
+              }
+              block.appendChild(avatarTop);
+
+              const name=document.createElement('div');
+              name.className='lantern';
+              const b=document.createElement('b');
+              b.textContent=entry.nickname||entry.youtube||entry.id;
+              name.appendChild(b);
+              block.appendChild(name);
+
+              const timeRange=document.createElement('div');
+              timeRange.className='time-range';
+              timeRange.textContent=(entry.start||'')+' - '+(entry.end||'');
+              block.appendChild(timeRange);
+
+              const linkRow=document.createElement('div');
+              if(ytSafe){
+                const a=document.createElement('a');
+                a.className='yt-link';
+                a.href=ytSafe;
+                a.target='_blank';
+                a.rel='noopener noreferrer';
+                a.innerHTML=YT_SVG+'<span>'+esc(entry.youtube||entry.nickname||entry.id)+'</span>';
+                a.addEventListener('click',ev=>{ev.stopPropagation();});
+                linkRow.appendChild(a);
+              }else if(entry.sns){
+                const snsSafe=safeUrl(entry.sns);
+                if(snsSafe){
+                  const a=document.createElement('a');
+                  a.className='yt-link';
+                  a.href=snsSafe;
+                  a.target='_blank';
+                  a.rel='noopener noreferrer';
+                  a.innerHTML='<span>↗</span><span>'+esc(entry.sns)+'</span>';
+                  a.addEventListener('click',ev=>{ev.stopPropagation();});
+                  linkRow.appendChild(a);
+                }else{
+                  const span=document.createElement('span');
+                  span.textContent=entry.sns;
+                  linkRow.appendChild(span);
+                }
+              }else{
+                const span=document.createElement('span');
+                span.textContent=entry.youtube||entry.nickname||entry.id;
+                linkRow.appendChild(span);
+              }
+              block.appendChild(linkRow);
+
+              const bioPreview=document.createElement('div');
+              bioPreview.className='bio-preview';
+              bioPreview.textContent=entry.bio||'';
+              block.appendChild(bioPreview);
+
+              block.addEventListener('click',()=>openModal(entry));
+              block.addEventListener('keydown',ev=>{
+                if(ev.key==='Enter'||ev.key===' '){
+                  ev.preventDefault();
+                  openModal(entry);
+                }
+              });
+
+              cell.appendChild(block);
+            }
+            tr.appendChild(cell);
+          });
+        });
+        tbody.appendChild(tr);
+      }
+      table.appendChild(tbody);
+      wrapper.appendChild(table);
+      showMsg('');
+      loadChannelAvatars();
+    }catch(err){
+      showMsg('タイムテーブルの取得に失敗しました。');
+    }
+  }
+
+  function assignLanes(entries){
+    const dayEntries=[...entries].sort((a,b)=>{
+      return timeToMinutes(a.start)-timeToMinutes(b.start);
+    });
+    const lanes=[];
+    dayEntries.forEach(e=>{
+      const s=timeToMinutes(e.start);
+      const eMin=timeToMinutes(e.end);
+      let placed=false;
+      for(const lane of lanes){
+        const last=lane[lane.length-1];
+        const lastEnd=timeToMinutes(last.end);
+        if(lastEnd<=s){
+          lane.push(e);
+          placed=true;
+          break;
+        }
+      }
+      if(!placed){
+        lanes.push([e]);
+      }
+    });
+    return lanes;
+  }
+
+  async function loadChannelAvatars(){
+    const nodes=document.querySelectorAll('.tt-avatar-top[data-yt]');
+    nodes.forEach(async span=>{
+      if(span.dataset.loaded) return;
+      span.dataset.loaded='1';
+      const url=span.dataset.yt;
+      try{
+        const res=await fetch('/api/channel-thumb?url='+encodeURIComponent(url));
+        if(!res.ok) throw new Error();
+        const data=await res.json();
+        if(!data.thumb) throw new Error();
+        const img=document.createElement('img');
+        img.className='tt-avatar-img';
+        img.src=data.thumb;
+        img.loading='lazy';
+        img.referrerPolicy='no-referrer';
+        span.appendChild(img);
+      }catch(err){
+        span.textContent='';
+      }
+    });
+  }
+
+  // --- modal ---
+  (function(){
+    const modal=document.getElementById('tt-modal');
+    const content=document.getElementById('tt-modal-content');
+    let lastFocus=null;
+    if(!modal || !content) return;
+    function close(){
+      modal.hidden=true;
+      document.body.style.overflow='';
+      if(lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    document.addEventListener('keydown',e=>{
+      if(e.key==='Escape' && !modal.hidden){
+        close();
+      }
+    });
+    modal.addEventListener('click',e=>{
+      if(e.target.dataset.close){
+        close();
+      }
+    });
+    window.openModal=function(entry){
+      modal.hidden=false;
+      document.body.style.overflow='hidden';
+      lastFocus=document.activeElement;
+      content.innerHTML='';
+      const title=document.createElement('div');
+      title.className='modal-title';
+      title.id='tt-modal-title';
+      title.textContent=entry.nickname||entry.youtube||entry.id;
+      content.appendChild(title);
+
+      const meta=document.createElement('div');
+      meta.className='modal-meta';
+      const dt=new Date(entry.date);
+      const md=(dt.getMonth()+1)+'/'+dt.getDate();
+      meta.textContent=md+' '+(entry.start||'')+' – '+(entry.end||'');
+      content.appendChild(meta);
+
+      const actions=document.createElement('div');
+      actions.className='modal-actions';
+
+      const ytSafe=safeUrl(entry.youtubeUrl);
+      if(ytSafe){
+        const btn=document.createElement('a');
+        btn.className='modal-btn';
+        btn.href=ytSafe;
+        btn.target='_blank';
+        btn.rel='noopener noreferrer';
+        btn.innerHTML=YT_SVG+'<span>YouTubeを見る</span>';
+        actions.appendChild(btn);
+      }else if(entry.youtube){
+        const span=document.createElement('span');
+        span.className='modal-btn';
+        span.innerHTML='<span>YouTube: '+esc(entry.youtube)+'</span>';
+        actions.appendChild(span);
+      }
+
+      const snsSafe=safeUrl(entry.sns);
+      if(snsSafe){
+        const btn=document.createElement('a');
+        btn.className='modal-btn';
+        btn.href=snsSafe;
+        btn.target='_blank';
+        btn.rel='noopener noreferrer';
+        btn.innerHTML='<span>X / Twitch を見る</span>';
+        actions.appendChild(btn);
+      }
+
+      content.appendChild(actions);
+
+      const body=document.createElement('div');
+      body.className='modal-body';
+      body.textContent=entry.bio||'';
+      content.appendChild(body);
+    };
+  })();
+
+  // --- edit ---
+  (function(){
+    const loginForm=document.getElementById('login-form');
+    const editCard=document.getElementById('edit-card');
+    const editForm=document.getElementById('edit-form');
+    const msg=document.getElementById('edit-msg');
+    const logoutBtn=document.getElementById('logout-btn');
+    const deleteBtn=document.getElementById('delete-btn');
+    let currentEntry=null;
+    let currentId=null;
+    let currentPin=null;
+    if(!loginForm || !editForm) return;
+    function showMsg(text,type){
+      msg.textContent=text||'';
+      msg.classList.remove('error','success');
+      if(type) msg.classList.add(type);
+    }
+    loginForm.addEventListener('submit',async e=>{
+      e.preventDefault();
+      const id=document.getElementById('login-id').value.trim();
+      const pin=document.getElementById('login-pin').value.trim();
+      if(!id || !pin){
+        showMsg('IDとPINを入力してください。','error');
+        return;
+      }
+      try{
+        const res=await fetch('/api/login',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({id,pin})
+        });
+        const data=await res.json();
+        if(!res.ok){
+          showMsg(data.error||'IDまたはPINが正しくありません。','error');
+          return;
+        }
+        currentEntry=data;
+        currentId=id;
+        currentPin=pin;
+        document.getElementById('edit-youtube').value=data.youtube||'';
+        document.getElementById('edit-youtube-url').value=data.youtubeUrl||'';
+        document.getElementById('edit-bio').value=data.bio||'';
+        editCard.hidden=false;
+        showMsg('ログインしました。','success');
+      }catch(err){
+        showMsg('通信エラーが発生しました。','error');
+      }
+    });
+
+    editForm.addEventListener('submit',async e=>{
+      e.preventDefault();
+      if(!currentId || !currentPin){
+        showMsg('先にログインしてください。','error');
+        return;
+      }
+      const youtube=document.getElementById('edit-youtube').value.trim();
+      const youtubeUrl=document.getElementById('edit-youtube-url').value.trim();
+      const bio=document.getElementById('edit-bio').value.trim();
+      if(!youtube){
+        showMsg('YouTubeチャンネル名は必須です。','error');
+        return;
+      }
+      if(!/^https?:\/\//i.test(youtubeUrl)){
+        showMsg('YouTube URLは https:// から始まる正しいURLを入力してください。','error');
+        return;
+      }
+      if(!bio){
+        showMsg('自己紹介・配信内容は必須です。','error');
+        return;
+      }
+      try{
+        const res=await fetch('/api/entries/'+encodeURIComponent(currentId),{
+          method:'PUT',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            pin:currentPin,
+            updates:{youtube,youtubeUrl,bio}
+          })
+        });
+        const data=await res.json();
+        if(!res.ok){
+          showMsg(data.error||'エラーが発生しました。','error');
+          return;
+        }
+        showMsg('変更を保存しました。','success');
+      }catch(err){
+        showMsg('通信エラーが発生しました。','error');
+      }
+    });
+
+    logoutBtn.addEventListener('click',()=>{
+      currentEntry=null;
+      currentId=null;
+      currentPin=null;
+      editCard.hidden=true;
+      showMsg('ログアウトしました。','success');
+    });
+
+    deleteBtn.addEventListener('click',async ()=>{
+      if(!currentId || !currentPin){
+        showMsg('先にログインしてください。','error');
+        return;
+      }
+      if(!confirm('このエントリーを本当に削除しますか？')){
+        return;
+      }
+      try{
+        const res=await fetch('/api/entries/'+encodeURIComponent(currentId),{
+          method:'DELETE',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({pin:currentPin})
+        });
+        const data=await res.json();
+        if(!res.ok){
+          showMsg(data.error||'エラーが発生しました。','error');
+          return;
+        }
+        showMsg('エントリーを削除しました。','success');
+        currentEntry=null;
+        currentId=null;
+        currentPin=null;
+        editCard.hidden=true;
+      }catch(err){
+        showMsg('通信エラーが発生しました。','error');
+      }
+    });
+  })();
+</script>
+</body>
+</html>
