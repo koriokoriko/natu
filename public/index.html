@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SUMMER GAME FES 2026 - ゲーム配信フェス</title>
+<title>NGS夏フェス！2026 - ゲーム配信フェス</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -62,7 +62,9 @@
   .brand{
     font-family:'Orbitron',sans-serif; font-weight:900; font-size:15px; letter-spacing:.14em;
     color:#fff; white-space:nowrap; text-shadow:0 0 16px var(--glow);
+    cursor:pointer; user-select:none;
   }
+  .brand:focus-visible{outline:2px solid var(--cyan); outline-offset:3px; border-radius:6px;}
   .brand .accent{color:var(--violet-lt);}
   .nav{display:flex; gap:6px; margin-left:auto; flex-wrap:wrap; justify-content:flex-end;}
   .tab{
@@ -103,8 +105,21 @@
     background:linear-gradient(100deg,var(--violet-lt),var(--cyan) 60%,#fff);
     -webkit-background-clip:text; background-clip:text; color:transparent;
   }
-  .hero .sub{color:var(--ink-soft); font-size:clamp(14px,1.8vw,17px); line-height:1.9; max-width:52ch; margin:0 0 30px;}
+  .hero .sub{color:var(--ink-soft); font-size:clamp(14px,1.8vw,17px); line-height:1.9; max-width:52ch; margin:0 0 26px;}
   .cta-row{display:flex; gap:14px; flex-wrap:wrap;}
+
+  /* ---------- カウントダウン ---------- */
+  .countdown{display:flex; align-items:center; gap:14px; flex-wrap:wrap; margin:0 0 30px;}
+  .cd-label{font-family:'Orbitron',sans-serif; font-size:12.5px; letter-spacing:.12em; color:var(--cyan); text-shadow:0 0 12px var(--glow-cyan);}
+  .cd-units{display:flex; gap:10px;}
+  .cd-box{
+    display:flex; flex-direction:column; align-items:center; gap:3px; min-width:60px;
+    padding:10px 10px; border-radius:14px; background:var(--surface); border:1px solid var(--line);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    font-size:11px; color:var(--ink-soft);
+    box-shadow:0 6px 20px rgba(var(--shadow),0.4);
+  }
+  .cd-box b{font-family:'Orbitron',sans-serif; font-size:26px; font-weight:900; color:#fff; line-height:1; text-shadow:0 0 14px var(--glow);}
 
   /* 3D 惑星 */
   .planet-wrap{
@@ -215,7 +230,7 @@
   label .req{color:var(--rose); margin-left:3px;}
   .field{margin-bottom:16px;}
   .hint{font-size:11.5px; color:var(--ink-soft); margin-top:5px;}
-  input[type=text], input[type=url], input[type=date], input[type=time], input[type=password], input[type=tel], textarea{
+  input[type=text], input[type=url], input[type=date], input[type=time], input[type=datetime-local], input[type=password], input[type=tel], textarea{
     width:100%; border:1.5px solid var(--line); background:rgba(255,255,255,0.05);
     border-radius:12px; padding:12px 14px; font-size:15px;
     font-family:'Zen Kaku Gothic New',sans-serif; color:var(--ink);
@@ -226,7 +241,7 @@
     outline:none; border-color:var(--violet); background:rgba(124,58,237,.08);
     box-shadow:0 0 0 4px rgba(124,58,237,.22);
   }
-  input[type=date], input[type=time]{color-scheme:dark;}
+  input[type=date], input[type=time], input[type=datetime-local]{color-scheme:dark;}
   textarea{resize:vertical; min-height:84px;}
   input[type=color]{height:46px; width:96px; padding:4px; cursor:pointer; border:1.5px solid var(--line); border-radius:12px; background:rgba(255,255,255,.05);}
 
@@ -241,6 +256,24 @@
     background:linear-gradient(135deg,var(--violet),var(--cyan)); box-shadow:0 0 14px var(--glow);
   }
   fieldset.group > legend .lg-sub{font-weight:500; font-size:12px; color:var(--ink-soft);}
+
+  .remember{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--ink-soft); margin:2px 0 16px; cursor:pointer;}
+  .remember input{width:18px; height:18px; accent-color:var(--violet); cursor:pointer;}
+
+  /* 種別 / プラットフォーム 切替（セグメント） */
+  .seg{display:inline-flex; flex-wrap:wrap; gap:6px; background:rgba(255,255,255,.04); border:1px solid var(--line); border-radius:12px; padding:5px;}
+  .seg button{
+    appearance:none; border:none; background:transparent; color:var(--ink-soft);
+    font-family:'Zen Kaku Gothic New',sans-serif; font-size:14px; font-weight:700;
+    padding:10px 20px; border-radius:9px; cursor:pointer; min-height:42px; touch-action:manipulation;
+    transition:background .15s, color .15s, box-shadow .15s;
+  }
+  .seg button.active{background:linear-gradient(135deg,var(--violet),#5b21b6); color:#fff; box-shadow:0 0 16px var(--glow);}
+  .seg button:focus-visible{outline:2px solid var(--cyan); outline-offset:2px;}
+  #entry-form[data-role="streamer"] .role-supporter,
+  #entry-form[data-role="supporter"] .role-streamer,
+  #edit-card[data-role="streamer"] .role-supporter,
+  #edit-card[data-role="supporter"] .role-streamer{display:none;}
 
   .btn{
     appearance:none; border:none; border-radius:13px; padding:14px 28px; font-size:15px; font-weight:800;
@@ -265,6 +298,8 @@
   .msg.err{background:rgba(244,63,94,.10); color:#ffb3bf; border:1px solid rgba(244,63,94,.45);}
 
   /* ---------- timetable board ---------- */
+  /* タイムテーブル画面は横幅をフルに使う（レーンが多くても右まで表示） */
+  #view-timetable > .container{ max-width:none; padding-left:clamp(16px,3vw,40px); padding-right:clamp(16px,3vw,40px); }
   .empty-state{
     text-align:center; padding:56px 20px; color:var(--ink-soft); font-size:13.5px;
     border:1.5px dashed var(--line); border-radius:20px; background:var(--surface);
@@ -272,13 +307,14 @@
   }
   .empty-state::before{content:"🛰️"; display:block; font-size:34px; margin-bottom:10px;}
   .tt-wrap{
-    overflow-x:auto; border-radius:20px; padding:14px;
+    overflow-x:hidden; border-radius:20px; padding:14px;
     background:linear-gradient(165deg, rgba(20,22,52,.75), rgba(10,10,26,.85));
     border:1px solid var(--line);
     backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
     box-shadow:0 24px 60px rgba(var(--shadow),0.6);
   }
-  table.tt{border-collapse:separate; border-spacing:5px; width:100%; min-width:500px;}
+  table.tt{border-collapse:separate; border-spacing:5px; width:100%; table-layout:fixed;}
+  col.tt-timecol{width:74px;}
   table.tt th, table.tt td{text-align:center;}
   table.tt th{
     background:linear-gradient(135deg,var(--violet),#5b21b6); color:#fff; border-radius:10px;
@@ -287,40 +323,90 @@
   }
   table.tt td.time-col{
     background:rgba(255,255,255,.04); font-family:'Orbitron',sans-serif; font-size:14px;
-    color:var(--cyan); font-weight:700; padding:8px 6px; white-space:nowrap; width:78px; border-radius:8px;
+    color:var(--cyan); font-weight:700; padding:8px 6px; white-space:nowrap; width:86px; border-radius:8px;
   }
-  table.tt td{min-width:120px; vertical-align:top; height:46px;}
+  table.tt td.time-col .daytag{display:block; font-size:9.5px; letter-spacing:.1em; color:var(--rose); margin-top:2px;}
+  table.tt td{vertical-align:top; height:46px; overflow:hidden;}
   .lantern{
     margin:0; padding:11px 10px; border-radius:12px; font-size:14px; line-height:1.55;
     position:relative; height:100%; box-sizing:border-box; font-weight:600;
     display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; gap:2px;
     color:#fff; text-shadow:0 1px 3px rgba(0,0,0,.6);
     backdrop-filter:blur(9px) saturate(1.35); -webkit-backdrop-filter:blur(9px) saturate(1.35);
+    cursor:pointer; transition:filter .12s ease, transform .12s ease;
   }
+  .lantern:hover{filter:brightness(1.08);}
+  .lantern:focus-visible{outline:2px solid var(--cyan); outline-offset:2px;}
   .lantern::before{
     content:""; position:absolute; top:-4px; left:50%; transform:translateX(-50%);
     width:26px; height:5px; border-radius:3px; background:var(--cyan); box-shadow:0 0 10px var(--glow-cyan);
   }
-  .lantern{cursor:pointer; transition:filter .12s ease, transform .12s ease;}
-  .lantern:hover{filter:brightness(1.08);}
-  .lantern:focus-visible{outline:2px solid var(--cyan); outline-offset:2px;}
-  .lantern b{display:block; font-size:18px; margin-bottom:3px;}
+  .lantern b{display:block; font-size:16px; margin-bottom:3px; word-break:break-word;}
+  .lantern-special{
+    cursor:default;
+    background:linear-gradient(150deg, rgba(245,158,11,.42), rgba(180,110,6,.24));
+    border:1px solid rgba(245,158,11,.75);
+    box-shadow:0 6px 26px rgba(245,158,11,.30), inset 0 1px 0 rgba(255,255,255,.3);
+  }
+  .lantern-special .tt-badge{
+    display:inline-block; margin-bottom:6px; padding:3px 10px; border-radius:999px;
+    font-family:'Orbitron',sans-serif; font-size:10px; letter-spacing:.06em; font-weight:700;
+    color:#3a2500; background:linear-gradient(135deg,#ffe08a,#f59e0b);
+  }
+  .lantern-special b{font-family:'Zen Kaku Gothic New',sans-serif; font-size:16px;}
+  .tt-official-row{display:block; font-size:12.5px; margin:2px 0; opacity:.95; font-weight:600;}
+  col.tt-officialcol{width:168px;}
+  .official-col{vertical-align:top;}
+  /* 公式イベントは縦長列なので中身を上寄せ（中央だと画面外に行く） */
+  .official-col .lantern{justify-content:flex-start; padding-top:16px;}
+  .official-col .lantern b{font-size:17px; margin-bottom:6px;}
+  @media (max-width:720px){ col.tt-officialcol{width:120px;} }
   .lantern a{color:inherit; text-decoration:underline; font-weight:700; opacity:.95;}
   .yt-ico{width:16px; height:16px; vertical-align:-3px; margin-right:5px; display:inline-block; flex:none;}
+  .tw-ico{width:16px; height:16px; vertical-align:-3px; margin-right:5px; display:inline-block; flex:none;}
   .tt-avatar-top{display:block; line-height:0; margin-bottom:8px;}
   .tt-avatar-top:empty{display:none;}
   .tt-avatar-img{
     width:48px; height:48px; border-radius:50%; object-fit:cover; display:block;
     border:2px solid rgba(255,255,255,.6); box-shadow:0 0 12px rgba(0,0,0,.45);
   }
-  .modal-links .btn .yt-ico{width:18px; height:18px; vertical-align:-4px; margin-right:6px;}
   .tt-time{display:block; font-family:'Orbitron',sans-serif; font-size:12.5px; opacity:.9; margin:2px 0 3px;}
   .tt-yt{display:inline-flex; align-items:center; font-size:15px; font-weight:800;}
-  .tt-ch{display:inline-flex; align-items:center; font-size:13px; opacity:.9;}
   .tt-bio{
     display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
     margin-top:6px; font-size:12.5px; line-height:1.45; opacity:.9; font-weight:400;
   }
+
+  /* ---------- supporters（応援メンバー一覧） ---------- */
+  .supporters{margin:0 0 28px;}
+  .sup-title{font-family:'Zen Kaku Gothic New',sans-serif; font-size:18px; font-weight:900; color:#fff; margin:0 0 14px; display:flex; align-items:center; gap:8px;}
+  .sup-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px;}
+  .sup-card{
+    display:flex; align-items:center; gap:12px; padding:14px 16px; border-radius:14px;
+    background:var(--surface); border:1px solid var(--line);
+    backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
+    text-decoration:none; color:#fff; transition:border-color .15s, box-shadow .15s;
+  }
+  .sup-card:hover{border-color:rgba(124,58,237,.6); box-shadow:0 0 20px rgba(124,58,237,.25);}
+  .sup-card .x-ico{width:22px; height:22px; flex:none; color:#fff;}
+  .sup-body{display:flex; flex-direction:column; min-width:0;}
+  .sup-name{font-weight:700;}
+  .sup-msg{font-size:12px; color:var(--ink-soft); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+
+  /* ---------- 管理者リスト ---------- */
+  .admin-row{
+    display:flex; align-items:center; gap:12px; padding:12px 14px; margin-bottom:8px;
+    border:1px solid var(--line); border-radius:12px; background:rgba(255,255,255,.03);
+  }
+  .admin-row .admin-tag{
+    font-family:'Orbitron',sans-serif; font-size:10px; letter-spacing:.08em;
+    padding:3px 9px; border-radius:6px; border:1px solid var(--line); color:var(--cyan); flex:none;
+  }
+  .admin-row .a-body{display:flex; flex-direction:column; min-width:0; gap:2px;}
+  .admin-row .a-name{font-weight:700; color:#fff; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .admin-row .a-meta{font-size:12px; color:var(--ink-soft); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .admin-row .a-edit{margin-left:auto; flex:none; padding:8px 16px; min-height:40px; font-size:13px;}
+  .admin-row .a-del{margin-left:8px; flex:none; padding:8px 16px; min-height:40px; font-size:13px;}
 
   /* ---------- entry detail modal ---------- */
   .modal[hidden]{display:none;}
@@ -345,7 +431,7 @@
   .modal-links{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;}
   .modal-links:empty{display:none;}
   .modal-links .btn{padding:10px 18px; min-height:42px; font-size:14px;}
-  .modal-ch{color:var(--ink-soft); font-size:14px; align-self:center;}
+  .modal-links .btn svg{width:18px; height:18px; margin-right:6px; vertical-align:-4px;}
   .modal-label{font-family:'Orbitron',sans-serif; font-size:11px; letter-spacing:.14em; color:var(--ink-soft); margin-bottom:7px;}
   .modal-bio{margin:0; white-space:pre-wrap; word-break:break-word; line-height:1.85; font-size:14.5px; color:var(--ink);}
 
@@ -367,10 +453,9 @@
   <!-- ===== Top nav ===== -->
   <div class="topbar">
     <div class="container">
-      <div class="brand">SGF<span class="accent">/</span>2026</div>
+      <div class="brand" data-goto="home" role="button" tabindex="0" aria-label="トップへ戻る">NGS<span class="accent">/</span>2026</div>
       <nav class="nav" aria-label="メインナビゲーション">
         <button class="tab active" data-view="home">トップ</button>
-        <button class="tab" data-view="entry">登録フォーム</button>
         <button class="tab" data-view="timetable">タイムテーブル</button>
         <button class="tab" data-view="edit">編集</button>
       </nav>
@@ -385,12 +470,23 @@
           <div class="planet"><span class="planet-ring"></span><span class="moon"></span></div>
         </div>
         <div class="container">
-          <div class="eyebrow">SUMMER GAME STREAMING FES 2026</div>
-          <h1>真夏の<span class="grad">ゲーム配信</span>フェス、宇宙ではじまる</h1>
-          <p class="sub">配信者も視聴者も、みんなが主役。好きなゲームを好きな時間に配信エントリーするだけで、あなたの枠がフェスのタイムテーブルに並ぶ。参加無料、登録は約1分。</p>
+          <div class="eyebrow">NGS SUMMER FES 2026</div>
+          <h1><span class="grad">NGS夏フェス！</span>2026</h1>
+          <p class="sub">配信者も応援者も、みんなが主役。オールナイトのゲーム配信フェス。配信者はYouTube/Twitchで枠をエントリー、応援者はXで参加。8/29の夜から8/30の朝まで、みんなで盛り上がろう。</p>
+
+          <div class="countdown" id="countdown">
+            <span class="cd-label">開催まで あと</span>
+            <span class="cd-units">
+              <span class="cd-box"><b id="cd-d">--</b><span>日</span></span>
+              <span class="cd-box"><b id="cd-h">--</b><span>時間</span></span>
+              <span class="cd-box"><b id="cd-m">--</b><span>分</span></span>
+              <span class="cd-box"><b id="cd-s">--</b><span>秒</span></span>
+            </span>
+          </div>
+
           <div class="cta-row">
-            <button type="button" class="btn btn-primary btn-lg" data-goto="entry">登録フォームへ</button>
-            <button type="button" class="btn btn-ghost btn-lg" data-goto="timetable">タイムテーブルを見る</button>
+            <button type="button" class="btn btn-primary btn-lg" data-goto="timetable">タイムテーブルを見る</button>
+            <button type="button" class="btn btn-ghost btn-lg" data-goto="entry">🎟 招待コードをお持ちの方</button>
           </div>
         </div>
       </header>
@@ -398,26 +494,18 @@
       <div class="container">
         <!-- 開催概要 -->
         <div class="info-grid">
-          <div class="info-card"><div class="k">DATE</div><div class="v">7/20 – 7/21</div><div class="s">2日間開催</div></div>
-          <div class="info-card"><div class="k">TIME</div><div class="v">8:00 – 20:00</div><div class="s">好きな枠でOK</div></div>
+          <div class="info-card"><div class="k">DATE</div><div class="v">8/29 – 8/30</div><div class="s">オールナイト開催</div></div>
+          <div class="info-card"><div class="k">TIME</div><div class="v">19:00 – 翌11:00</div><div class="s">8/29夜〜8/30朝</div></div>
           <div class="info-card"><div class="k">PLACE</div><div class="v">ONLINE</div><div class="s">YouTube / Twitch 配信</div></div>
           <div class="info-card"><div class="k">ENTRY</div><div class="v">無料</div><div class="s">登録は約1分</div></div>
-        </div>
-
-        <!-- 3ステップ -->
-        <h2 class="section-title">参加はかんたん3ステップ</h2>
-        <p class="section-sub">エントリーから配信当日まで、この流れだけ。</p>
-        <div class="steps">
-          <div class="step"><div class="num" aria-hidden="true">1</div><h3>登録フォームで申込</h3><p>ID・PINと配信したい日時、チャンネル情報を入力して登録。所要1分。</p></div>
-          <div class="step"><div class="num" aria-hidden="true">2</div><h3>タイムテーブルに掲載</h3><p>登録するとフェスのタイムテーブルにあなたの枠が自動で並びます。</p></div>
-          <div class="step"><div class="num" aria-hidden="true">3</div><h3>当日配信</h3><p>登録した時間になったら配信スタート。みんなでフェスを盛り上げよう。</p></div>
         </div>
 
         <!-- CTA band -->
         <div class="lp-band">
           <h2>準備はいい？ 宇宙一のフェスへ。</h2>
-          <p>エントリーはいつでも編集・削除できます。まずは枠を確保しよう。</p>
-          <button type="button" class="btn btn-primary btn-lg" data-goto="entry">登録フォームへ進む</button>
+          <p>8/29の夜から8/30の朝まで、みんなで盛り上げよう。まずはタイムテーブルをチェック。</p>
+          <button type="button" class="btn btn-primary btn-lg" data-goto="timetable">タイムテーブルを見る</button>
+          <p style="margin:16px 0 0; font-size:12px;">※出演エントリー（配信者・応援者）は招待制です。招待コードをお持ちの方は <a href="#entry" data-goto="entry">こちら</a>。</p>
         </div>
       </div>
     </section>
@@ -425,12 +513,52 @@
     <!-- ============ ENTRY (登録フォーム) ============ -->
     <section id="view-entry">
       <div class="container">
-        <h2 class="section-title" id="entry-form-title">登録フォーム</h2>
-        <p class="section-sub">配信したい日時を選んで登録してください。あとで自分で編集・削除できます。</p>
+        <h2 class="section-title" id="entry-form-title">登録フォーム <span class="lg-sub" style="font-weight:500;font-size:12px;color:var(--ink-soft);">招待制</span></h2>
+        <p class="section-sub">出演エントリーは招待制です。招待コードを入力すると登録フォームが開きます。</p>
+
+        <!-- 参加はかんたん3ステップ（登録フォームの上に掲載） -->
+        <div class="steps">
+          <div class="step"><div class="num" aria-hidden="true">1</div><h3>参加タイプを選ぶ</h3><p>配信する人は「配信者」、盛り上げ役は「応援者」を選びます。</p></div>
+          <div class="step"><div class="num" aria-hidden="true">2</div><h3>情報を入力</h3><p>配信者はYouTube/Twitchと配信日時、応援者はXのURLを入力するだけ。</p></div>
+          <div class="step"><div class="num" aria-hidden="true">3</div><h3>タイムテーブルに掲載</h3><p>配信者は枠が並び、応援者は下部の一覧に掲載されます。</p></div>
+        </div>
 
         <div id="entry-msg" class="msg" role="status" aria-live="polite"></div>
 
-        <form id="entry-form" class="card" aria-labelledby="entry-form-title">
+        <!-- 招待ゲート -->
+        <div id="invite-gate" class="card">
+          <fieldset class="group" style="margin:0;">
+            <legend><span class="badge" aria-hidden="true">🎟</span>招待コード</legend>
+            <div class="field">
+              <label for="invite-code">招待コード<span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="invite-code" placeholder="主催から共有されたコード" autocomplete="off">
+              <div class="hint">配信者・応援者として登録するには招待コードが必要です。お持ちでない場合は主催へお問い合わせください。</div>
+            </div>
+            <div class="btn-row">
+              <button type="button" class="btn btn-primary" id="invite-btn">コードを確認して進む</button>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- 管理者パネル（管理者コード入力時のみ表示） -->
+        <div id="admin-panel" class="card" style="display:none;">
+          <h3 style="margin:0 0 6px; color:#fff; font-size:18px;">管理者モード</h3>
+          <p class="hint" style="margin:0 0 16px;">全エントリーの一覧です。「削除」で任意の予定を削除できます。</p>
+          <div id="admin-list"></div>
+        </div>
+
+        <form id="entry-form" class="card" data-role="streamer" aria-labelledby="entry-form-title" style="display:none;">
+          <!-- 参加タイプ -->
+          <fieldset class="group">
+            <legend><span class="badge" aria-hidden="true">★</span>参加タイプ</legend>
+            <div class="seg" id="entry-role-seg" role="group" aria-label="参加タイプ">
+              <button type="button" data-val="streamer" class="active">配信者</button>
+              <button type="button" data-val="supporter">応援者</button>
+            </div>
+            <div class="hint">配信する人は「配信者」、盛り上げ役は「応援者」を選んでください。</div>
+          </fieldset>
+
+          <!-- ログイン情報 -->
           <fieldset class="group">
             <legend><span class="badge" aria-hidden="true">ID</span>ログイン情報 <span class="lg-sub">編集時に必要です</span></legend>
             <div class="grid2">
@@ -445,60 +573,79 @@
                 <div class="hint">忘れると編集できません。控えておいてください。</div>
               </div>
             </div>
+            <label class="remember"><input type="checkbox" id="f-remember" checked> このブラウザにマイID・PINを保存する</label>
           </fieldset>
 
+          <!-- プロフィール（共通＋種別別URL） -->
           <fieldset class="group">
-            <legend><span class="badge" aria-hidden="true">01</span>配信者プロフィール</legend>
+            <legend><span class="badge" aria-hidden="true">01</span>プロフィール</legend>
             <div class="field">
               <label for="f-nickname">ニックネーム<span class="req" aria-hidden="true">*</span></label>
-              <input type="text" id="f-nickname" placeholder="配信者名" required>
+              <input type="text" id="f-nickname" placeholder="表示名" required>
             </div>
-            <div class="grid2">
-              <div class="field">
-                <label for="f-youtube">YouTubeチャンネル名<span class="req" aria-hidden="true">*</span></label>
-                <input type="text" id="f-youtube" placeholder="例: たろうGameChannel" required>
-              </div>
-              <div class="field">
-                <label for="f-youtube-url">YouTube URL<span class="req" aria-hidden="true">*</span></label>
-                <input type="url" id="f-youtube-url" placeholder="https://youtube.com/@..." required>
-              </div>
-            </div>
-            <div class="field">
-              <label for="f-sns">X / Twitch などのURL</label>
-              <input type="text" id="f-sns" placeholder="https://...">
-              <div class="hint">X / Twitch のURLがあれば入力してください（任意）。</div>
-            </div>
-          </fieldset>
 
-          <fieldset class="group">
-            <legend><span class="badge" aria-hidden="true">02</span>配信日時</legend>
-            <div class="grid2">
+            <!-- 配信者：プラットフォーム＋配信URL -->
+            <div class="role-streamer">
               <div class="field">
-                <label for="f-date">配信希望日<span class="req" aria-hidden="true">*</span></label>
-                <input type="date" id="f-date" required>
-              </div>
-              <div></div>
-              <div class="field">
-                <label for="f-start">開始時刻（8:00〜20:00）<span class="req" aria-hidden="true">*</span></label>
-                <input type="time" id="f-start" min="08:00" max="20:00" required>
+                <label>配信プラットフォーム<span class="req" aria-hidden="true">*</span></label>
+                <div class="seg" id="entry-plat-seg" role="group" aria-label="配信プラットフォーム">
+                  <button type="button" data-val="youtube" class="active">YouTube</button>
+                  <button type="button" data-val="twitch">Twitch</button>
+                </div>
               </div>
               <div class="field">
-                <label for="f-end">終了時刻（8:00〜20:00）<span class="req" aria-hidden="true">*</span></label>
-                <input type="time" id="f-end" min="08:00" max="20:00" required>
+                <label for="f-stream-url">配信URL（YouTube または Twitch）<span class="req" aria-hidden="true">*</span></label>
+                <input type="url" id="f-stream-url" placeholder="https://youtube.com/@... または https://twitch.tv/...">
+                <div class="hint">選んだプラットフォームのチャンネル／配信URLを入力してください。</div>
+              </div>
+            </div>
+
+            <!-- 応援者：X URL -->
+            <div class="role-supporter">
+              <div class="field">
+                <label for="f-x-url">X（旧Twitter）URL<span class="req" aria-hidden="true">*</span></label>
+                <input type="url" id="f-x-url" placeholder="https://x.com/...">
+                <div class="hint">応援者としてタイムテーブル下部の一覧に掲載されます。</div>
               </div>
             </div>
           </fieldset>
 
-          <fieldset class="group">
+          <!-- 配信者：配信日時 -->
+          <fieldset class="group role-streamer">
+            <legend><span class="badge" aria-hidden="true">02</span>配信日時 <span class="lg-sub">8/29 19:00 〜 8/30 11:00（日をまたいでもOK）</span></legend>
+            <div class="grid2">
+              <div class="field">
+                <label for="f-start-at">開始日時<span class="req" aria-hidden="true">*</span></label>
+                <input type="datetime-local" id="f-start-at" min="2026-08-29T19:00" max="2026-08-30T11:00">
+              </div>
+              <div class="field">
+                <label for="f-end-at">終了日時<span class="req" aria-hidden="true">*</span></label>
+                <input type="datetime-local" id="f-end-at" min="2026-08-29T19:00" max="2026-08-30T11:00">
+              </div>
+            </div>
+            <div class="hint">深夜またぎ（例：8/29 22:00 → 8/30 05:00）もそのまま登録できます。</div>
+          </fieldset>
+
+          <!-- 配信者：内容・表示 -->
+          <fieldset class="group role-streamer">
             <legend><span class="badge" aria-hidden="true">03</span>配信内容・表示</legend>
             <div class="field">
               <label for="f-bio">自己紹介・配信内容<span class="req" aria-hidden="true">*</span></label>
-              <textarea id="f-bio" placeholder="やるゲームや意気込みなど自由に書いてください" required></textarea>
+              <textarea id="f-bio" placeholder="やるゲームや意気込みなど自由に書いてください"></textarea>
             </div>
             <div class="field">
               <label for="f-color">タイムテーブルの枠の色</label>
               <input type="color" id="f-color" value="#7C3AED">
               <div class="hint">タイムテーブルに表示される自分の枠の色を選べます。</div>
+            </div>
+          </fieldset>
+
+          <!-- 応援者：メッセージ -->
+          <fieldset class="group role-supporter">
+            <legend><span class="badge" aria-hidden="true">02</span>応援メッセージ</legend>
+            <div class="field">
+              <label for="f-x-msg">応援メッセージ（任意）</label>
+              <textarea id="f-x-msg" placeholder="配信者への応援コメントなど"></textarea>
             </div>
           </fieldset>
 
@@ -513,7 +660,7 @@
     <section id="view-timetable">
       <div class="container">
         <h2 class="section-title">タイムテーブル / 配信スケジュール</h2>
-        <p class="section-sub">エントリーされたゲーム配信の予定一覧です。気になる配信の時間をチェック！</p>
+        <p class="section-sub">エントリーされたゲーム配信の予定一覧です。気になる配信の時間をチェック！ 上部には応援メンバーを掲載。</p>
         <div id="tt-container"></div>
       </div>
     </section>
@@ -537,51 +684,69 @@
               <input type="tel" id="l-pin" maxlength="4" inputmode="numeric" autocomplete="off" required>
             </div>
           </div>
+          <label class="remember"><input type="checkbox" id="l-remember" checked> このブラウザにマイID・PINを保存する</label>
           <button class="btn btn-primary" id="login-btn">ログインして編集</button>
         </div>
 
-        <div class="card" id="edit-card" style="display:none;">
+        <div class="card" id="edit-card" data-role="streamer" style="display:none;">
+          <fieldset class="group">
+            <legend><span class="badge" aria-hidden="true">★</span>参加タイプ</legend>
+            <div class="seg" id="edit-role-seg" role="group" aria-label="参加タイプ">
+              <button type="button" data-val="streamer" class="active">配信者</button>
+              <button type="button" data-val="supporter">応援者</button>
+            </div>
+          </fieldset>
+
           <div class="field">
             <label for="e-nickname">ニックネーム</label>
             <input type="text" id="e-nickname">
           </div>
-          <div class="grid2">
+
+          <!-- 配信者 -->
+          <div class="role-streamer">
             <div class="field">
-              <label for="e-youtube">YouTubeチャンネル名<span class="req" aria-hidden="true">*</span></label>
-              <input type="text" id="e-youtube" required>
+              <label>配信プラットフォーム</label>
+              <div class="seg" id="edit-plat-seg" role="group" aria-label="配信プラットフォーム">
+                <button type="button" data-val="youtube" class="active">YouTube</button>
+                <button type="button" data-val="twitch">Twitch</button>
+              </div>
             </div>
             <div class="field">
-              <label for="e-youtube-url">YouTube URL<span class="req" aria-hidden="true">*</span></label>
-              <input type="url" id="e-youtube-url" required>
+              <label for="e-stream-url">配信URL（YouTube または Twitch）</label>
+              <input type="url" id="e-stream-url">
             </div>
-          </div>
-          <div class="field">
-            <label for="e-sns">X / Twitch などのURL</label>
-            <input type="text" id="e-sns">
-          </div>
-          <div class="grid2">
-            <div class="field">
-              <label for="e-date">配信希望日</label>
-              <input type="date" id="e-date">
-            </div>
-            <div></div>
-            <div class="field">
-              <label for="e-start">開始時刻（8:00〜20:00）</label>
-              <input type="time" id="e-start" min="08:00" max="20:00">
+            <div class="grid2">
+              <div class="field">
+                <label for="e-start-at">開始日時</label>
+                <input type="datetime-local" id="e-start-at" min="2026-08-29T19:00" max="2026-08-30T11:00">
+              </div>
+              <div class="field">
+                <label for="e-end-at">終了日時</label>
+                <input type="datetime-local" id="e-end-at" min="2026-08-29T19:00" max="2026-08-30T11:00">
+              </div>
             </div>
             <div class="field">
-              <label for="e-end">終了時刻（8:00〜20:00）</label>
-              <input type="time" id="e-end" min="08:00" max="20:00">
+              <label for="e-bio">自己紹介・配信内容</label>
+              <textarea id="e-bio"></textarea>
+            </div>
+            <div class="field">
+              <label for="e-color">タイムテーブルの枠の色</label>
+              <input type="color" id="e-color">
             </div>
           </div>
-          <div class="field">
-            <label for="e-bio">自己紹介・配信内容<span class="req" aria-hidden="true">*</span></label>
-            <textarea id="e-bio" required></textarea>
+
+          <!-- 応援者 -->
+          <div class="role-supporter">
+            <div class="field">
+              <label for="e-x-url">X（旧Twitter）URL</label>
+              <input type="url" id="e-x-url">
+            </div>
+            <div class="field">
+              <label for="e-x-msg">応援メッセージ（任意）</label>
+              <textarea id="e-x-msg"></textarea>
+            </div>
           </div>
-          <div class="field">
-            <label for="e-color">タイムテーブルの枠の色</label>
-            <input type="color" id="e-color">
-          </div>
+
           <div class="btn-row">
             <button class="btn btn-primary" id="save-btn">変更を保存</button>
             <button class="btn btn-danger" id="delete-btn">このエントリーを削除</button>
@@ -592,7 +757,7 @@
     </section>
   </main>
 
-  <footer>SUMMER GAME STREAMING FES 2026</footer>
+  <footer>NGS SUMMER FES 2026</footer>
 
   <!-- ===== エントリー詳細モーダル ===== -->
   <div id="tt-modal" class="modal" hidden>
@@ -617,7 +782,7 @@
   if(!canvas) return;
   const ctx = canvas.getContext('2d');
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let w, h, dpr, stars = [], boost = 0, running = true;
+  let w, h, dpr, stars = [], running = true;
   const COLORS = ['#ffffff', '#a78bfa', '#22d3ee', '#f9a8d4'];
 
   function resize(){
@@ -636,8 +801,7 @@
   const N = Math.max(120, Math.min(320, Math.floor(w*h/6500)));
   for(let i=0;i<N;i++) stars.push(spawn());
 
-  // 成功時などにワープをブースト（外から呼べる）
-  window.__warp = function(){ boost = Math.min(boost + 16, 22); };
+  window.__warp = function(){}; // ワープ加速は廃止（常に一定速度）
 
   function drawStatic(){
     ctx.fillStyle = '#07070f'; ctx.fillRect(0,0,w,h);
@@ -655,8 +819,7 @@
     ctx.fillStyle = 'rgba(7,7,15,0.32)';
     ctx.fillRect(0,0,w,h);
     const cx=w/2, cy=h/2;
-    const sp = (w*0.006) * (1 + boost);
-    boost *= 0.9;
+    const sp = w * 0.003; // 従来(0.006)の半分・固定速度
     for(const s of stars){
       const pz = s.z;
       s.z -= sp;
@@ -704,11 +867,52 @@
 
 function celebrate(){ if(window.__warp) window.__warp(); }
 
-let currentLogin = null; // {id, pin}
-let ttById = {};         // タイムテーブル用: id → エントリー
+// ---------- 開催カウントダウン（開催前→開催中→終了の3段階） ----------
+(function(){
+  const box = document.getElementById('countdown');
+  if(!box) return;
+  const start = new Date('2026-08-29T19:00:00+09:00').getTime(); // 開催開始
+  const end   = new Date('2026-08-30T11:30:00+09:00').getTime(); // 開催終了（エンディング終了）
+  const dEl = document.getElementById('cd-d'), hEl = document.getElementById('cd-h'),
+        mEl = document.getElementById('cd-m'), sEl = document.getElementById('cd-s');
+  let phase = '';
+  function tick(){
+    const now = Date.now();
+    if(now >= end){
+      box.innerHTML = '<span class="cd-label">開催は終了しました！有難うございました！</span>';
+      return true; // 停止
+    }
+    if(now >= start){
+      if(phase !== 'live'){ box.innerHTML = '<span class="cd-label">🎉 ただいま開催中！</span>'; phase = 'live'; }
+      return false; // 終了時刻まで監視継続
+    }
+    const t = Math.floor((start - now) / 1000);
+    dEl.textContent = Math.floor(t / 86400);
+    hEl.textContent = String(Math.floor((t % 86400) / 3600)).padStart(2,'0');
+    mEl.textContent = String(Math.floor((t % 3600) / 60)).padStart(2,'0');
+    sEl.textContent = String(t % 60).padStart(2,'0');
+    return false;
+  }
+  if(!tick()){
+    const timer = setInterval(()=>{ if(tick()) clearInterval(timer); }, 1000);
+  }
+})();
 
-// YouTube アイコン（SVG・定数なので安全）
+// ---------- 定数（アイコン・開催期間） ----------
 const YT_ICON = '<svg class="yt-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="#FF0000" d="M23 7.5a3 3 0 0 0-2.1-2.1C19 5 12 5 12 5s-7 0-8.9.4A3 3 0 0 0 1 7.5 31 31 0 0 0 .6 12 31 31 0 0 0 1 16.5a3 3 0 0 0 2.1 2.1C5 19 12 19 12 19s7 0 8.9-.4A3 3 0 0 0 23 16.5 31 31 0 0 0 23.4 12 31 31 0 0 0 23 7.5z"/><path fill="#fff" d="M9.75 15.5v-7l6 3.5z"/></svg>';
+const TWITCH_ICON = '<svg class="tw-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="#9146FF" d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714z"/></svg>';
+const X_ICON = '<svg class="x-ico" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
+
+const FEST_MIN = '2026-08-29T19:00';   // 開催開始
+const FEST_MAX = '2026-08-30T11:00';   // 開催終了
+const FEST_BASE = 19 * 60;             // 8/29 00:00 起点での開始(分)
+const FEST_LEN  = 16 * 60;             // 全長960分
+
+let currentLogin = null; // {id, pin}
+let ttById = {};         // タイムテーブル用: streamer id → エントリー
+let entryRole = 'streamer', entryPlatform = 'youtube';
+let editRole = 'streamer', editPlatform = 'youtube';
+let inviteCode = '';     // 招待制ゲートで確認済みのコード
 
 // ---------- API helpers ----------
 async function apiGetEntries(){
@@ -749,9 +953,69 @@ async function apiDeleteEntry(id, pin){
   return data;
 }
 
-// ---------- ナビ / ビュー切替 ----------
-const VIEWS = ['home', 'entry', 'timetable', 'edit']; // 許可ビュー（ハッシュ検証にも使用）
+// ---------- 共通ヘルパ ----------
+function esc(s){
+  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function safeUrl(u){ const s = String(u || '').trim(); return /^https?:\/\//i.test(s) ? s : ''; }
+function hostOf(u){ try{ return new URL(u).hostname.toLowerCase(); }catch(_){ return ''; } }
+function isYouTubeUrl(u){ return /(^|\.)youtube\.com$|(^|\.)youtu\.be$/.test(hostOf(u)); }
+function isTwitchUrl(u){ return /(^|\.)twitch\.tv$/.test(hostOf(u)); }
+function isXUrl(u){ return /(^|\.)x\.com$|(^|\.)twitter\.com$/.test(hostOf(u)); }
+function inFestWindow(dt){ return typeof dt === 'string' && dt.length >= 16 && dt >= FEST_MIN && dt <= FEST_MAX; }
 
+function minutesToTime(m){ const h = Math.floor(m/60), mm = m%60; return String(h).padStart(2,'0')+':'+String(mm).padStart(2,'0'); }
+// 'YYYY-MM-DDTHH:MM' → 8/29 00:00 起点の分（8/29=0, 8/30=+1440）
+function dtToAbsMin(s){
+  const m = /^2026-08-(\d{2})T(\d{2}):(\d{2})$/.exec(String(s||''));
+  if(!m) return null;
+  const day = parseInt(m[1],10), hh = parseInt(m[2],10), mm = parseInt(m[3],10);
+  return (day-29)*1440 + hh*60 + mm;
+}
+function fmtDT(s){
+  const m = /^2026-08-(\d{2})T(\d{2}:\d{2})$/.exec(String(s||''));
+  return m ? `8/${parseInt(m[1],10)} ${m[2]}` : String(s||'');
+}
+
+// ---------- セグメント切替（種別・プラットフォーム） ----------
+function segSelect(segEl, val){
+  segEl.querySelectorAll('button[data-val]').forEach(b=> b.classList.toggle('active', b.dataset.val === val));
+}
+(function(){
+  const eRole = document.getElementById('entry-role-seg');
+  eRole.addEventListener('click', (ev)=>{
+    const b = ev.target.closest('button[data-val]'); if(!b) return;
+    entryRole = b.dataset.val; segSelect(eRole, entryRole);
+    document.getElementById('entry-form').dataset.role = entryRole;
+  });
+  const ePlat = document.getElementById('entry-plat-seg');
+  ePlat.addEventListener('click', (ev)=>{
+    const b = ev.target.closest('button[data-val]'); if(!b) return;
+    entryPlatform = b.dataset.val; segSelect(ePlat, entryPlatform);
+    document.getElementById('f-stream-url').placeholder =
+      entryPlatform === 'twitch' ? 'https://twitch.tv/...' : 'https://youtube.com/@...';
+  });
+  const dRole = document.getElementById('edit-role-seg');
+  dRole.addEventListener('click', (ev)=>{
+    const b = ev.target.closest('button[data-val]'); if(!b) return;
+    setEditRole(b.dataset.val);
+  });
+  const dPlat = document.getElementById('edit-plat-seg');
+  dPlat.addEventListener('click', (ev)=>{
+    const b = ev.target.closest('button[data-val]'); if(!b) return;
+    editPlatform = b.dataset.val; segSelect(dPlat, editPlatform);
+  });
+})();
+function setEditRole(r){
+  editRole = r; segSelect(document.getElementById('edit-role-seg'), r);
+  document.getElementById('edit-card').dataset.role = r;
+}
+function setEditPlatform(p){
+  editPlatform = p; segSelect(document.getElementById('edit-plat-seg'), p);
+}
+
+// ---------- ナビ / ビュー切替 ----------
+const VIEWS = ['home', 'entry', 'timetable', 'edit'];
 function activateView(view){
   if(!VIEWS.includes(view)) return;
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
@@ -761,7 +1025,6 @@ function activateView(view){
   document.getElementById('view-'+view).classList.add('active');
   if(view === 'timetable') renderTimetable();
 }
-
 document.querySelectorAll('.tab').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     const view = btn.dataset.view;
@@ -770,16 +1033,20 @@ document.querySelectorAll('.tab').forEach(btn=>{
     if(location.hash.slice(1) !== view){ history.replaceState(null, '', '#'+view); }
   });
 });
-
-// LP内のボタンから特定ビューへ
 document.querySelectorAll('[data-goto]').forEach(el=>{
-  el.addEventListener('click', ()=>{
-    const target = document.querySelector('.tab[data-view="'+el.dataset.goto+'"]');
-    if(target) target.click();
+  el.addEventListener('click', (ev)=>{
+    if(el.tagName === 'A') ev.preventDefault(); // アンカーの既定遷移は止める
+    const view = el.dataset.goto;
+    if(!VIEWS.includes(view)) return;
+    activateView(view);
+    window.scrollTo({top:0, behavior:'smooth'});
+    if(location.hash.slice(1) !== view){ history.replaceState(null, '', '#'+view); }
   });
+  // button/anchor以外（例: ブランドのdiv）はキーボード操作に対応
+  if(el.tagName !== 'BUTTON' && el.tagName !== 'A'){
+    el.addEventListener('keydown', (ev)=>{ if(ev.key === 'Enter' || ev.key === ' '){ ev.preventDefault(); el.click(); } });
+  }
 });
-
-// ハッシュによるディープリンク（例: #timetable で直接開ける・共有できる）
 function syncFromHash(){
   const h = location.hash.slice(1);
   if(VIEWS.includes(h)) activateView(h);
@@ -793,129 +1060,347 @@ function showMsg(elId, text, ok){
   el.className = 'msg show ' + (ok ? 'ok' : 'err');
 }
 
+// ---------- マイID/PIN をこの端末に保存（任意・localStorage） ----------
+const CRED_KEY = 'ngsCred';
+function saveCred(id, pin){ try{ localStorage.setItem(CRED_KEY, JSON.stringify({id, pin})); }catch(_){} }
+function clearCred(){ try{ localStorage.removeItem(CRED_KEY); }catch(_){} }
+function loadCred(){ try{ return JSON.parse(localStorage.getItem(CRED_KEY) || 'null'); }catch(_){ return null; } }
+(function(){
+  const c = loadCred();
+  if(!c) return;
+  [['f-id','f-pin','f-remember'], ['l-id','l-pin','l-remember']].forEach(([idEl, pinEl, remEl])=>{
+    const i = document.getElementById(idEl), p = document.getElementById(pinEl), r = document.getElementById(remEl);
+    if(i && !i.value) i.value = c.id || '';
+    if(p && !p.value) p.value = c.pin || '';
+    if(r) r.checked = true;
+  });
+})();
+
+// ---------- コードゲート（招待コード＝登録 / 管理者コード＝管理） ----------
+let adminCode = '';
+let adminEditId = null;   // 管理者が編集中のエントリーID
+let adminEntries = [];    // 管理者リストの全エントリー
+
+// 管理者による更新
+async function apiAdminUpdate(id, updates){
+  const res = await fetch('/api/admin/update', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ code: adminCode, id, ...updates }) });
+  const d = await res.json();
+  if(!res.ok) throw new Error(d.error || '更新に失敗しました。');
+  return d;
+}
+// 編集フォームに値を流し込む（本人ログイン・管理者編集で共用）
+function fillEditForm(entry){
+  setEditRole(entry.role === 'supporter' ? 'supporter' : 'streamer');
+  setEditPlatform(entry.platform === 'twitch' ? 'twitch' : 'youtube');
+  document.getElementById('e-nickname').value = entry.nickname || '';
+  document.getElementById('e-stream-url').value = entry.streamUrl || '';
+  document.getElementById('e-start-at').value = entry.startAt || '';
+  document.getElementById('e-end-at').value = entry.endAt || '';
+  document.getElementById('e-color').value = entry.color || '#7C3AED';
+  document.getElementById('e-x-url').value = entry.xUrl || '';
+  document.getElementById('e-bio').value = entry.bio || '';
+  document.getElementById('e-x-msg').value = entry.bio || '';
+}
+// 管理者：一覧の「編集」から編集画面へ
+function openAdminEdit(entry){
+  adminEditId = entry.id;
+  currentLogin = null;
+  activateView('edit');
+  document.getElementById('login-card').style.display = 'none';
+  document.getElementById('edit-card').style.display = 'block';
+  fillEditForm(entry);
+  showMsg('edit-msg', `管理者モード：「${entry.nickname || entry.id}」を編集中（PIN不要で保存・削除できます）`, true);
+}
+async function gateCheck(code){
+  try{
+    const res = await fetch('/api/gate?code=' + encodeURIComponent(code));
+    const d = await res.json();
+    return { status: res.status, ...d };
+  }catch(_){ return { status:0, result:'error' }; }
+}
+
+// ブラウザ側ロック表示（5回ミス→1時間・サーバーのretryAfterを反映）
+const LOCK_KEY = 'ngsGateLock';
+let lockTimer = null;
+function lockRemaining(){ try{ const u = parseInt(localStorage.getItem(LOCK_KEY) || '0', 10); return Math.max(0, u - Date.now()); }catch(_){ return 0; } }
+function renderLock(){
+  const rem = lockRemaining();
+  const input = document.getElementById('invite-code');
+  const btn = document.getElementById('invite-btn');
+  if(rem > 0){
+    input.disabled = true; btn.disabled = true;
+    const min = Math.floor(rem/60000), sec = Math.floor((rem%60000)/1000);
+    showMsg('entry-msg', `コードの誤りが続いたため一時的にロックされています。あと ${min}分${String(sec).padStart(2,'0')}秒 で解除されます。`, false);
+    if(!lockTimer) lockTimer = setInterval(renderLock, 1000);
+  }else{
+    if(input) input.disabled = false;
+    if(btn) btn.disabled = false;
+    if(lockTimer){ clearInterval(lockTimer); lockTimer = null; }
+    try{ localStorage.removeItem(LOCK_KEY); }catch(_){}
+  }
+}
+function setLock(retryAfterSec){
+  try{ localStorage.setItem(LOCK_KEY, String(Date.now() + (retryAfterSec || 3600) * 1000)); }catch(_){}
+  renderLock();
+}
+renderLock(); // ページ読込時に既存ロックを反映
+function unlockEntry(code){
+  inviteCode = code;
+  document.getElementById('invite-gate').style.display = 'none';
+  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('entry-form').style.display = '';
+}
+function enterAdminMode(code){
+  adminCode = code;
+  document.getElementById('invite-gate').style.display = 'none';
+  document.getElementById('entry-form').style.display = 'none';
+  document.getElementById('admin-panel').style.display = '';
+  loadAdminList();
+}
+async function loadAdminList(){
+  adminEntries = await apiGetEntries();
+  const box = document.getElementById('admin-list');
+  if(!adminEntries.length){ box.innerHTML = '<p class="hint">エントリーはありません。</p>'; return; }
+  box.innerHTML = adminEntries.map(e=>{
+    const roleLabel = e.role === 'supporter' ? '応援者' : '配信者';
+    const meta = e.role === 'supporter' ? esc(e.xUrl || '') : `${fmtDT(e.startAt)} – ${fmtDT(e.endAt)}`;
+    return `<div class="admin-row"><span class="admin-tag">${roleLabel}</span><span class="a-body"><span class="a-name">${esc(e.nickname || e.id)}</span><span class="a-meta">${meta}</span></span><button type="button" class="btn btn-ghost a-edit" data-id="${esc(e.id)}">編集</button><button type="button" class="btn btn-danger a-del" data-id="${esc(e.id)}">削除</button></div>`;
+  }).join('');
+}
+document.getElementById('admin-list').addEventListener('click', async (ev)=>{
+  const editBtn = ev.target.closest('.a-edit');
+  if(editBtn){
+    const entry = adminEntries.find(x=> String(x.id) === editBtn.dataset.id);
+    if(entry) openAdminEdit(entry);
+    return;
+  }
+  const btn = ev.target.closest('.a-del'); if(!btn) return;
+  if(!confirm('このエントリーを削除しますか？（管理者操作・取り消せません）')) return;
+  try{
+    const r = await fetch('/api/admin/delete', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ code: adminCode, id: btn.dataset.id }) });
+    const d = await r.json();
+    if(!r.ok) throw new Error(d.error || '削除に失敗しました。');
+    showMsg('entry-msg', '削除しました。', true);
+    loadAdminList();
+  }catch(err){ showMsg('entry-msg', err.message, false); }
+});
+// ミス回数（このブラウザのみ・localStorage）。5回で1時間ロック
+const FAILS_KEY = 'ngsGateFails';
+const MAX_FAILS = 5;
+function getFails(){ try{ return parseInt(localStorage.getItem(FAILS_KEY) || '0', 10) || 0; }catch(_){ return 0; } }
+function setFails(n){ try{ localStorage.setItem(FAILS_KEY, String(n)); }catch(_){} }
+function resetFails(){ try{ localStorage.removeItem(FAILS_KEY); }catch(_){} }
+
+document.getElementById('invite-btn').addEventListener('click', async ()=>{
+  if(lockRemaining() > 0){ renderLock(); return; }
+  const code = document.getElementById('invite-code').value.trim();
+  const r = await gateCheck(code);
+  if(r.result === 'invite'){ resetFails(); document.getElementById('entry-msg').className = 'msg'; unlockEntry(code); }
+  else if(r.result === 'admin'){ resetFails(); document.getElementById('entry-msg').className = 'msg'; enterAdminMode(code); }
+  else if(r.result === 'none'){
+    const fails = getFails() + 1;
+    if(fails >= MAX_FAILS){ resetFails(); setLock(3600); }
+    else { setFails(fails); showMsg('entry-msg', `コードが正しくありません。（あと${MAX_FAILS - fails}回でこのブラウザを1時間ロックします）`, false); }
+  }
+  else {
+    // 通信エラー等はロックしない
+    showMsg('entry-msg', '確認に失敗しました。通信状態を確認して、もう一度お試しください。', false);
+  }
+});
+// ?invite=コード が付いていれば自動で解錠し、登録画面へ（管理者コードも可）
+(async function(){
+  const params = new URLSearchParams(location.search);
+  const code = params.get('invite');
+  if(!code || lockRemaining() > 0) return;
+  const r = await gateCheck(code);
+  if(r.result === 'invite'){ resetFails(); unlockEntry(code); activateView('entry'); }
+  else if(r.result === 'admin'){ resetFails(); enterAdminMode(code); activateView('entry'); }
+})();
+
 // ---------- entry form ----------
 document.getElementById('entry-form').addEventListener('submit', async (e)=>{
   e.preventDefault();
   const id = document.getElementById('f-id').value.trim();
   const pin = document.getElementById('f-pin').value.trim();
   const nickname = document.getElementById('f-nickname').value.trim();
-  const youtube = document.getElementById('f-youtube').value.trim();
-  const youtubeUrl = document.getElementById('f-youtube-url').value.trim();
-  const sns = document.getElementById('f-sns').value.trim();
-  const date = document.getElementById('f-date').value;
-  const start = document.getElementById('f-start').value;
-  const end = document.getElementById('f-end').value;
-  const bio = document.getElementById('f-bio').value.trim();
-  const color = document.getElementById('f-color').value;
 
   if(!/^\d{4}$/.test(pin)){ showMsg('entry-msg', 'PINは4桁の数字で入力してください。', false); return; }
-  if(!youtube){ showMsg('entry-msg', 'YouTubeチャンネル名を入力してください。', false); return; }
-  if(!safeUrl(youtubeUrl)){ showMsg('entry-msg', 'YouTube URLは https:// から始まる正しいURLを入力してください。', false); return; }
-  if(!bio){ showMsg('entry-msg', '自己紹介・配信内容を入力してください。', false); return; }
-  if(start >= end){ showMsg('entry-msg', '終了時刻は開始時刻より後にしてください。', false); return; }
-  if(start < '08:00' || end > '20:00'){ showMsg('entry-msg', '配信時間は8:00〜20:00の範囲で入力してください。', false); return; }
+  if(!nickname){ showMsg('entry-msg', 'ニックネームを入力してください。', false); return; }
+
+  let payload;
+  if(entryRole === 'streamer'){
+    const streamUrl = document.getElementById('f-stream-url').value.trim();
+    const startAt = document.getElementById('f-start-at').value;
+    const endAt = document.getElementById('f-end-at').value;
+    const bio = document.getElementById('f-bio').value.trim();
+    const color = document.getElementById('f-color').value;
+    if(!safeUrl(streamUrl)){ showMsg('entry-msg', '配信URLは https:// から始まる正しいURLを入力してください。', false); return; }
+    if(entryPlatform === 'youtube' && !isYouTubeUrl(streamUrl)){ showMsg('entry-msg', 'YouTubeのURL（youtube.com / youtu.be）を入力してください。', false); return; }
+    if(entryPlatform === 'twitch' && !isTwitchUrl(streamUrl)){ showMsg('entry-msg', 'TwitchのURL（twitch.tv）を入力してください。', false); return; }
+    if(!startAt || !endAt){ showMsg('entry-msg', '開始日時と終了日時を入力してください。', false); return; }
+    if(!inFestWindow(startAt) || !inFestWindow(endAt)){ showMsg('entry-msg', '配信日時は 8/29 19:00 〜 8/30 11:00 の期間内で入力してください。', false); return; }
+    if(startAt >= endAt){ showMsg('entry-msg', '終了日時は開始日時より後にしてください。', false); return; }
+    if(!bio){ showMsg('entry-msg', '自己紹介・配信内容を入力してください。', false); return; }
+    payload = { invite:inviteCode, id, pin, role:'streamer', nickname, platform:entryPlatform, streamUrl, xUrl:'', startAt, endAt, bio, color };
+  }else{
+    const xUrl = document.getElementById('f-x-url').value.trim();
+    const bio = document.getElementById('f-x-msg').value.trim();
+    if(!safeUrl(xUrl)){ showMsg('entry-msg', 'XのURLは https:// から始まる正しいURLを入力してください。', false); return; }
+    if(!isXUrl(xUrl)){ showMsg('entry-msg', 'X（x.com / twitter.com）のURLを入力してください。', false); return; }
+    payload = { invite:inviteCode, id, pin, role:'supporter', nickname, platform:'', streamUrl:'', xUrl, startAt:'', endAt:'', bio, color:'' };
+  }
 
   try{
-    await apiPostEntry({id, pin, nickname, youtube, youtubeUrl, sns, date, start, end, bio, color});
+    await apiPostEntry(payload);
+    if(document.getElementById('f-remember').checked){ saveCred(id, pin); } else { clearCred(); }
     showMsg('entry-msg', `エントリー完了！ID「${id}」とPINは編集時に必要なので忘れずに控えてください。`, true);
     celebrate();
-    document.getElementById('entry-form').reset();
-    document.getElementById('f-color').value = '#7C3AED';
+    resetEntryForm();
   }catch(err){
     showMsg('entry-msg', err.message, false);
   }
 });
 
-// ---------- timetable ----------
-function timeToMinutes(t){ const [h,m] = t.split(':').map(Number); return h*60+m; }
-function minutesToTime(m){ const h = Math.floor(m/60), mm = m%60; return String(h).padStart(2,'0')+':'+String(mm).padStart(2,'0'); }
+function resetEntryForm(){
+  document.getElementById('entry-form').reset();
+  entryRole = 'streamer'; entryPlatform = 'youtube';
+  segSelect(document.getElementById('entry-role-seg'), 'streamer');
+  segSelect(document.getElementById('entry-plat-seg'), 'youtube');
+  document.getElementById('entry-form').dataset.role = 'streamer';
+  document.getElementById('f-color').value = '#7C3AED';
+}
 
+// ---------- timetable ----------
 async function renderTimetable(){
   const container = document.getElementById('tt-container');
   const list = await apiGetEntries();
+
+  const streamers = list.filter(e => e.role === 'streamer' && e.startAt && e.endAt)
+    .map(e => ({...e, _s: dtToAbsMin(e.startAt) - FEST_BASE, _e: dtToAbsMin(e.endAt) - FEST_BASE }))
+    .filter(e => e._s != null && e._e != null && e._e > e._s);
+  const supporters = list.filter(e => e.role === 'supporter' && safeUrl(e.xUrl));
+
   ttById = {};
-  list.forEach(e=>{ ttById[e.id] = e; });
-  if(list.length === 0){
-    container.innerHTML = '<div class="empty-state">まだエントリーがありません。登録フォームから申し込むと、ここにタイムテーブルが表示されます。</div>';
-    return;
-  }
+  streamers.forEach(e => { ttById[e.id] = e; });
 
-  const dates = [...new Set(list.map(e=>e.date))].sort();
-  const minM = 8 * 60, maxM = 20 * 60;
-  const slots = [];
-  for(let m=minM; m<maxM; m+=30) slots.push(m);
+  let gridHtml = '';
+  {
+    // 公式イベント（最左列）。表示範囲はフェス全長 or 公式イベント最終時刻の遅い方まで
+    const officials = [
+      { nickname:'盆踊り大会', startAt:'2026-08-29T20:00', endAt:'2026-08-29T21:00', venue:'後日発表予定' },
+      { nickname:'エンディング', startAt:'2026-08-30T11:00', endAt:'2026-08-30T11:30', venue:'' },
+    ];
+    let displayLen = FEST_LEN;
+    officials.forEach(ev=>{ const e = dtToAbsMin(ev.endAt) - FEST_BASE; if(e > displayLen) displayLen = e; });
 
-  function assignLanes(entries){
-    const sorted = [...entries].sort((a,b)=> timeToMinutes(a.start) - timeToMinutes(b.start));
-    const laneEnds = [];
-    const laneOfEntry = new Map();
+    const slotOffsets = [];
+    for(let o=0; o<displayLen; o+=30) slotOffsets.push(o);
+
+    // レーン割当（配信枠のみ・重複しない横列へ・貪欲法）
+    const laneEnds = []; const laneOf = new Map();
+    const sorted = [...streamers].sort((a,b)=> a._s - b._s);
     sorted.forEach(e=>{
-      const s = timeToMinutes(e.start);
       let placed = false;
       for(let i=0;i<laneEnds.length;i++){
-        if(laneEnds[i] <= s){ laneEnds[i] = timeToMinutes(e.end); laneOfEntry.set(e, i); placed = true; break; }
+        if(laneEnds[i] <= e._s){ laneEnds[i] = e._e; laneOf.set(e, i); placed = true; break; }
       }
-      if(!placed){ laneEnds.push(timeToMinutes(e.end)); laneOfEntry.set(e, laneEnds.length - 1); }
+      if(!placed){ laneEnds.push(e._e); laneOf.set(e, laneEnds.length - 1); }
     });
-    return { laneCount: Math.max(laneEnds.length, 1), laneOfEntry };
-  }
-
-  const dateInfo = {};
-  dates.forEach(d=>{
-    const entries = list.filter(e=>e.date === d);
-    const { laneCount, laneOfEntry } = assignLanes(entries);
-    const plan = Array.from({length: laneCount}, ()=> new Array(slots.length).fill(null));
-    entries.forEach(e=>{
-      const lane = laneOfEntry.get(e);
-      const s = timeToMinutes(e.start), en = timeToMinutes(e.end);
-      const occupied = [];
-      slots.forEach((ss, idx)=>{ if(ss < en && ss + 30 > s) occupied.push(idx); });
-      if(occupied.length === 0) return;
-      plan[lane][occupied[0]] = { entry: e, rowSpan: occupied.length };
-      for(let k=1;k<occupied.length;k++) plan[lane][occupied[k]] = 'skip';
+    const laneCount = Math.max(laneEnds.length, 1);
+    const plan = Array.from({length: laneCount}, ()=> new Array(slotOffsets.length).fill(null));
+    streamers.forEach(e=>{
+      const lane = laneOf.get(e);
+      const occ = [];
+      slotOffsets.forEach((so, idx)=>{ if(so < e._e && so + 30 > e._s) occ.push(idx); });
+      if(!occ.length) return;
+      plan[lane][occ[0]] = { entry:e, rowSpan:occ.length };
+      for(let k=1;k<occ.length;k++) plan[lane][occ[k]] = 'skip';
     });
-    dateInfo[d] = { laneCount, plan };
-  });
 
-  let html = '<div class="tt-wrap"><table class="tt"><thead><tr><th>時間</th>';
-  dates.forEach(d=>{
-    const dd = new Date(d+'T00:00:00');
-    const label = isNaN(dd) ? d : `${dd.getMonth()+1}/${dd.getDate()}`;
-    html += `<th colspan="${dateInfo[d].laneCount}">${label}</th>`;
-  });
-  html += '</tr></thead><tbody>';
+    let html = `<div class="tt-wrap"><table class="tt"><colgroup><col class="tt-timecol"><col class="tt-officialcol"><col span="${laneCount}"></colgroup><thead><tr><th>時間</th><th>公式イベント</th>`;
+    html += `<th colspan="${laneCount}">8/29 19:00 → 8/30 11:00</th>`;
+    html += '</tr></thead><tbody>';
 
-  slots.forEach((slotStart, rowIdx)=>{
-    html += `<tr><td class="time-col">${minutesToTime(slotStart)}</td>`;
-    dates.forEach(d=>{
-      const { laneCount, plan } = dateInfo[d];
+    // 公式イベント列（最左）：時間軸に沿って配置
+    const officialPlan = new Array(slotOffsets.length).fill(null);
+    officials.forEach(ev=>{
+      const s = dtToAbsMin(ev.startAt) - FEST_BASE, en = dtToAbsMin(ev.endAt) - FEST_BASE;
+      const occ = [];
+      slotOffsets.forEach((so, idx)=>{ if(so < en && so + 30 > s) occ.push(idx); });
+      if(!occ.length) return;
+      officialPlan[occ[0]] = { ev, rowSpan: occ.length };
+      for(let k=1;k<occ.length;k++) officialPlan[occ[k]] = 'skip';
+    });
+
+    slotOffsets.forEach((so, rowIdx)=>{
+      const abs = FEST_BASE + so;
+      const clock = minutesToTime(abs % 1440);
+      const dayTag = (abs === 1440) ? '<span class="daytag">8/30</span>' : '';
+      html += `<tr><td class="time-col">${clock}${dayTag}</td>`;
+      const oc = officialPlan[rowIdx];
+      if(oc && oc !== 'skip'){
+        const ev = oc.ev;
+        const sC = minutesToTime(dtToAbsMin(ev.startAt) % 1440);
+        const eC = minutesToTime(dtToAbsMin(ev.endAt) % 1440);
+        const venueRow = ev.venue ? `<span class="tt-official-row">会場：${esc(ev.venue)}</span>` : '';
+        html += `<td class="official-col" rowspan="${oc.rowSpan}"><div class="lantern lantern-special"><span class="tt-badge">🏮 公式イベント</span><b>${esc(ev.nickname)}</b><span class="tt-time">${sC}-${eC}</span>${venueRow}</div></td>`;
+      } else if(oc !== 'skip'){
+        html += '<td></td>';
+      }
       for(let lane=0; lane<laneCount; lane++){
         const cell = plan[lane][rowIdx];
         if(cell === 'skip') continue;
-        if(cell && cell.entry){
+        if(cell && cell.entry && cell.entry.special){
+          const e = cell.entry;
+          const color = e.color || '#F59E0B';
+          const dark = shadeColor(color, -30);
+          const sClock = minutesToTime(dtToAbsMin(e.startAt) % 1440);
+          const eClock = minutesToTime(dtToAbsMin(e.endAt) % 1440);
+          const vurl = (e.venueUrl && /^https?:\/\//i.test(e.venueUrl)) ? e.venueUrl : '#';
+          const vattr = vurl === '#' ? '' : ' target="_blank" rel="noopener"';
+          const bioPrev = (e.bio && e.bio.trim()) ? `<span class="tt-bio">${esc(e.bio)}</span>` : '';
+          html += `<td rowspan="${cell.rowSpan}"><div class="lantern lantern-special" style="background:linear-gradient(150deg, ${hexToRgba(color,0.42)}, ${hexToRgba(dark,0.24)}); border:1px solid ${hexToRgba(color,0.75)}; box-shadow:0 6px 26px ${hexToRgba(color,0.30)}, inset 0 1px 0 rgba(255,255,255,.3);"><span class="tt-badge">🏮 特別企画</span><b>${esc(e.nickname)}</b><span class="tt-time">${sClock}-${eClock}</span><a class="tt-yt" href="${esc(vurl)}"${vattr}>会場はこちら</a>${bioPrev}</div></td>`;
+        }else if(cell && cell.entry){
           const e = cell.entry;
           const color = e.color || '#7C3AED';
           const dark = shadeColor(color, -25);
-          const yt = safeUrl(e.youtubeUrl), snsUrl = safeUrl(e.sns);
-          const avatarTop = yt ? `<span class="tt-avatar-top" data-yt="${esc(yt)}"></span>` : '';
-          const link = yt ? `<a class="tt-yt" href="${esc(yt)}" target="_blank" rel="noopener">${YT_ICON}${esc(e.youtube || 'YouTube')}</a>`
-                     : (snsUrl ? `<a class="tt-yt" href="${esc(snsUrl)}" target="_blank" rel="noopener">↗ ${esc(e.sns)}</a>`
-                     : (e.youtube ? `<span class="tt-ch">${YT_ICON}${esc(e.youtube)}</span>` : ''));
+          const url = safeUrl(e.streamUrl);
+          const isTw = e.platform === 'twitch';
+          const icon = isTw ? TWITCH_ICON : YT_ICON;
+          const platLabel = isTw ? 'Twitch' : 'YouTube';
+          const avatarTop = url ? `<span class="tt-avatar-top" data-yt="${esc(url)}"></span>` : '';
+          const link = url ? `<a class="tt-yt" href="${esc(url)}" target="_blank" rel="noopener">${icon}${platLabel}</a>` : '';
+          const sClock = minutesToTime(dtToAbsMin(e.startAt) % 1440);
+          const eClock = minutesToTime(dtToAbsMin(e.endAt) % 1440);
           const bioPrev = (e.bio && e.bio.trim()) ? `<span class="tt-bio">${esc(e.bio)}</span>` : '';
-          html += `<td rowspan="${cell.rowSpan}"><div class="lantern" data-id="${esc(e.id)}" role="button" tabindex="0" title="${esc(e.bio || e.nickname || '')}" style="background:linear-gradient(150deg, ${hexToRgba(color,0.30)}, ${hexToRgba(dark,0.16)}); border:1px solid ${hexToRgba(color,0.6)}; box-shadow:0 6px 22px ${hexToRgba(color,0.20)}, inset 0 1px 0 rgba(255,255,255,.28);">${avatarTop}<b>${esc(e.nickname)}</b><span class="tt-time">${esc(e.start)}-${esc(e.end)}</span>${link}${bioPrev}</div></td>`;
-        } else {
+          html += `<td rowspan="${cell.rowSpan}"><div class="lantern" data-id="${esc(e.id)}" role="button" tabindex="0" title="${esc(e.bio || e.nickname || '')}" style="background:linear-gradient(150deg, ${hexToRgba(color,0.30)}, ${hexToRgba(dark,0.16)}); border:1px solid ${hexToRgba(color,0.6)}; box-shadow:0 6px 22px ${hexToRgba(color,0.20)}, inset 0 1px 0 rgba(255,255,255,.28);">${avatarTop}<b>${esc(e.nickname)}</b><span class="tt-time">${sClock}-${eClock}</span>${link}${bioPrev}</div></td>`;
+        }else{
           html += '<td></td>';
         }
       }
+      html += '</tr>';
     });
-    html += '</tr>';
-  });
-  html += '</tbody></table></div>';
-  container.innerHTML = html;
-  loadChannelAvatars(); // チャンネルアイコンを非同期取得して差し替え
+    html += '</tbody></table></div>';
+    gridHtml = html;
+  }
+
+  // 応援メンバー一覧
+  let supHtml = '';
+  if(supporters.length){
+    supHtml += '<div class="supporters"><h3 class="sup-title">🎉 応援メンバー</h3><div class="sup-grid">';
+    supporters.forEach(s=>{
+      const u = safeUrl(s.xUrl); if(!u) return;
+      const msg = (s.bio && s.bio.trim()) ? `<span class="sup-msg">${esc(s.bio)}</span>` : '';
+      supHtml += `<a class="sup-card" href="${esc(u)}" target="_blank" rel="noopener">${X_ICON}<span class="sup-body"><span class="sup-name">${esc(s.nickname || '応援者')}</span>${msg}</span></a>`;
+    });
+    supHtml += '</div></div>';
+  }
+
+  container.innerHTML = supHtml + gridHtml;
+  loadChannelAvatars();
 }
 
-// YouTubeチャンネルアイコンを取得して枠の最上部に表示する
+// YouTube/Twitchチャンネルアイコンを取得して枠の最上部に表示する
 function loadChannelAvatars(){
   document.querySelectorAll('.tt-avatar-top[data-yt]').forEach(slot=>{
     const url = slot.dataset.yt;
@@ -931,7 +1416,7 @@ function loadChannelAvatars(){
           img.alt = '';
           img.loading = 'lazy';
           img.referrerPolicy = 'no-referrer';
-          img.onerror = ()=>{ slot.remove(); }; // 失敗時は非表示
+          img.onerror = ()=>{ slot.remove(); };
           slot.appendChild(img);
         }
       })
@@ -940,7 +1425,7 @@ function loadChannelAvatars(){
 }
 
 function shadeColor(hex, percent){
-  hex = hex.replace('#','');
+  hex = String(hex||'#7C3AED').replace('#','');
   if(hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
   const num = parseInt(hex, 16);
   let r = (num >> 16) + Math.round(255 * percent / 100);
@@ -951,56 +1436,43 @@ function shadeColor(hex, percent){
   b = Math.max(0, Math.min(255, b));
   return '#' + (0x1000000 + r*0x10000 + g*0x100 + b).toString(16).slice(1);
 }
-
 function hexToRgba(hex, alpha){
-  hex = hex.replace('#','');
+  hex = String(hex||'#7C3AED').replace('#','');
   if(hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
   const num = parseInt(hex, 16);
   const r = (num >> 16) & 255, g = (num >> 8) & 255, b = num & 255;
   return `rgba(${r},${g},${b},${alpha})`;
 }
 
-function esc(s){
-  return String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-function safeUrl(u){ const s = String(u || '').trim(); return /^https?:\/\//i.test(s) ? s : ''; }
-// （pickTextColorはガラス化に伴い白文字統一のため廃止）
-
-// ---------- エントリー詳細モーダル ----------
+// ---------- 詳細モーダル（配信者） ----------
 let modalLastFocus = null;
 function openEntryModal(e){
   const m = document.getElementById('tt-modal');
   m.querySelector('#tt-modal-title').textContent = e.nickname || '(名称未設定)';
+  m.querySelector('.modal-meta').textContent = `${fmtDT(e.startAt)} – ${fmtDT(e.endAt)}`;
 
-  const dd = new Date(e.date + 'T00:00:00');
-  const dlabel = isNaN(dd) ? e.date : `${dd.getMonth()+1}/${dd.getDate()}`;
-  m.querySelector('.modal-meta').textContent = `${dlabel}　${e.start} – ${e.end}`;
-
-  // リンク（textContent/createElementで安全に構築）
   const links = m.querySelector('.modal-links');
   links.textContent = '';
-  const yt = safeUrl(e.youtubeUrl);
-  if(yt){
+  const url = safeUrl(e.streamUrl);
+  if(url){
+    const isTw = e.platform === 'twitch';
     const a = document.createElement('a');
-    a.href = yt; a.target = '_blank'; a.rel = 'noopener';
+    a.href = url; a.target = '_blank'; a.rel = 'noopener';
     a.className = 'btn btn-primary';
-    a.innerHTML = YT_ICON; // 定数SVG（安全）
-    a.appendChild(document.createTextNode('YouTubeを見る'));
+    a.innerHTML = isTw ? TWITCH_ICON : YT_ICON;
+    a.appendChild(document.createTextNode(isTw ? 'Twitchで見る' : 'YouTubeで見る'));
     links.appendChild(a);
-  } else if(e.youtube){
-    const s = document.createElement('span');
-    s.className = 'modal-ch'; s.textContent = 'YouTube: ' + e.youtube;
-    links.appendChild(s);
   }
-  const sns = safeUrl(e.sns);
-  if(sns){
+  const x = safeUrl(e.xUrl);
+  if(x){
     const a = document.createElement('a');
-    a.href = sns; a.target = '_blank'; a.rel = 'noopener';
-    a.className = 'btn btn-ghost'; a.textContent = 'X / Twitch を見る';
+    a.href = x; a.target = '_blank'; a.rel = 'noopener';
+    a.className = 'btn btn-ghost';
+    a.innerHTML = X_ICON;
+    a.appendChild(document.createTextNode('Xを見る'));
     links.appendChild(a);
   }
 
-  // 自己紹介
   const wrap = m.querySelector('.modal-bio-wrap');
   const bio = m.querySelector('.modal-bio');
   if(e.bio && e.bio.trim()){ wrap.style.display = ''; bio.textContent = e.bio; }
@@ -1018,13 +1490,11 @@ function closeEntryModal(){
   document.body.style.overflow = '';
   if(modalLastFocus && modalLastFocus.focus) modalLastFocus.focus();
 }
-
-// タイムテーブルの枠クリック／キーボードで詳細を開く（リンククリックは除外）
 (function(){
   const cont = document.getElementById('tt-container');
   if(!cont) return;
   cont.addEventListener('click', (ev)=>{
-    if(ev.target.closest('a')) return; // リンクはそのまま遷移
+    if(ev.target.closest('a')) return;
     const cell = ev.target.closest('.lantern');
     if(cell && ttById[cell.dataset.id]) openEntryModal(ttById[cell.dataset.id]);
   });
@@ -1050,45 +1520,48 @@ document.getElementById('login-btn').addEventListener('click', async ()=>{
   try{ entry = await apiLogin(id, pin); }
   catch(err){ showMsg('edit-msg', err.message, false); return; }
   currentLogin = {id, pin};
+  adminEditId = null; // 本人ログイン
+  if(document.getElementById('l-remember').checked){ saveCred(id, pin); } else { clearCred(); }
   document.getElementById('edit-msg').className = 'msg';
   document.getElementById('login-card').style.display = 'none';
   document.getElementById('edit-card').style.display = 'block';
-  document.getElementById('e-nickname').value = entry.nickname;
-  document.getElementById('e-youtube').value = entry.youtube;
-  document.getElementById('e-youtube-url').value = entry.youtubeUrl || '';
-  document.getElementById('e-sns').value = entry.sns;
-  document.getElementById('e-date').value = entry.date;
-  document.getElementById('e-start').value = entry.start;
-  document.getElementById('e-end').value = entry.end;
-  document.getElementById('e-bio').value = entry.bio;
-  document.getElementById('e-color').value = entry.color || '#7C3AED';
+  fillEditForm(entry);
 });
 
 document.getElementById('save-btn').addEventListener('click', async ()=>{
-  if(!currentLogin) return;
-  const start = document.getElementById('e-start').value;
-  const end = document.getElementById('e-end').value;
-  const eYoutube = document.getElementById('e-youtube').value.trim();
-  const eYoutubeUrl = document.getElementById('e-youtube-url').value.trim();
-  const eBio = document.getElementById('e-bio').value.trim();
-  if(!eYoutube){ showMsg('edit-msg', 'YouTubeチャンネル名を入力してください。', false); return; }
-  if(!safeUrl(eYoutubeUrl)){ showMsg('edit-msg', 'YouTube URLは https:// から始まる正しいURLを入力してください。', false); return; }
-  if(!eBio){ showMsg('edit-msg', '自己紹介・配信内容を入力してください。', false); return; }
-  if(start >= end){ showMsg('edit-msg', '終了時刻は開始時刻より後にしてください。', false); return; }
-  if(start < '08:00' || end > '20:00'){ showMsg('edit-msg', '配信時間は8:00〜20:00の範囲で入力してください。', false); return; }
+  if(!currentLogin && !adminEditId) return;
+  const nickname = document.getElementById('e-nickname').value.trim();
+  if(!nickname){ showMsg('edit-msg', 'ニックネームを入力してください。', false); return; }
+
+  let updates;
+  if(editRole === 'streamer'){
+    const streamUrl = document.getElementById('e-stream-url').value.trim();
+    const startAt = document.getElementById('e-start-at').value;
+    const endAt = document.getElementById('e-end-at').value;
+    const bio = document.getElementById('e-bio').value.trim();
+    const color = document.getElementById('e-color').value;
+    if(!safeUrl(streamUrl)){ showMsg('edit-msg', '配信URLは https:// から始まる正しいURLを入力してください。', false); return; }
+    if(editPlatform === 'youtube' && !isYouTubeUrl(streamUrl)){ showMsg('edit-msg', 'YouTubeのURL（youtube.com / youtu.be）を入力してください。', false); return; }
+    if(editPlatform === 'twitch' && !isTwitchUrl(streamUrl)){ showMsg('edit-msg', 'TwitchのURL（twitch.tv）を入力してください。', false); return; }
+    if(!startAt || !endAt){ showMsg('edit-msg', '開始日時と終了日時を入力してください。', false); return; }
+    if(!inFestWindow(startAt) || !inFestWindow(endAt)){ showMsg('edit-msg', '配信日時は 8/29 19:00 〜 8/30 11:00 の期間内で入力してください。', false); return; }
+    if(startAt >= endAt){ showMsg('edit-msg', '終了日時は開始日時より後にしてください。', false); return; }
+    if(!bio){ showMsg('edit-msg', '自己紹介・配信内容を入力してください。', false); return; }
+    updates = { role:'streamer', nickname, platform:editPlatform, streamUrl, xUrl:'', startAt, endAt, bio, color };
+  }else{
+    const xUrl = document.getElementById('e-x-url').value.trim();
+    const bio = document.getElementById('e-x-msg').value.trim();
+    if(!safeUrl(xUrl)){ showMsg('edit-msg', 'XのURLは https:// から始まる正しいURLを入力してください。', false); return; }
+    if(!isXUrl(xUrl)){ showMsg('edit-msg', 'X（x.com / twitter.com）のURLを入力してください。', false); return; }
+    updates = { role:'supporter', nickname, platform:'', streamUrl:'', xUrl, startAt:'', endAt:'', bio, color:'' };
+  }
 
   try{
-    await apiUpdateEntry(currentLogin.id, {
-      pin: currentLogin.pin,
-      nickname: document.getElementById('e-nickname').value.trim(),
-      youtube: document.getElementById('e-youtube').value.trim(),
-      youtubeUrl: document.getElementById('e-youtube-url').value.trim(),
-      sns: document.getElementById('e-sns').value.trim(),
-      date: document.getElementById('e-date').value,
-      start, end,
-      bio: document.getElementById('e-bio').value.trim(),
-      color: document.getElementById('e-color').value,
-    });
+    if(adminEditId){
+      await apiAdminUpdate(adminEditId, updates);
+    }else{
+      await apiUpdateEntry(currentLogin.id, { pin: currentLogin.pin, ...updates });
+    }
     showMsg('edit-msg', '変更を保存しました。', true);
   }catch(err){
     showMsg('edit-msg', err.message, false);
@@ -1096,21 +1569,27 @@ document.getElementById('save-btn').addEventListener('click', async ()=>{
 });
 
 document.getElementById('delete-btn').addEventListener('click', async ()=>{
-  if(!currentLogin) return;
+  if(!currentLogin && !adminEditId) return;
   if(!confirm('本当にこのエントリーを削除しますか？')) return;
   try{
-    await apiDeleteEntry(currentLogin.id, currentLogin.pin);
+    if(adminEditId){
+      const r = await fetch('/api/admin/delete', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ code: adminCode, id: adminEditId }) });
+      const d = await r.json();
+      if(!r.ok) throw new Error(d.error || '削除に失敗しました。');
+    }else{
+      await apiDeleteEntry(currentLogin.id, currentLogin.pin);
+    }
     showMsg('edit-msg', 'エントリーを削除しました。', true);
     document.getElementById('edit-card').style.display = 'none';
     document.getElementById('login-card').style.display = 'block';
-    currentLogin = null;
+    currentLogin = null; adminEditId = null;
   }catch(err){
     showMsg('edit-msg', err.message, false);
   }
 });
 
 document.getElementById('logout-btn').addEventListener('click', ()=>{
-  currentLogin = null;
+  currentLogin = null; adminEditId = null;
   document.getElementById('edit-card').style.display = 'none';
   document.getElementById('login-card').style.display = 'block';
   document.getElementById('l-id').value = '';

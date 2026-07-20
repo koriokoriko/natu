@@ -1,3 +1,1 @@
-id,pin,nickname,youtube,youtubeUrl,sns,date,start,end,bio,color,createdAt
-korio,1234,コリオゆきちゃんねる,コリオゆきちゃんねる,https://www.youtube.com/@MrBeast,,2026-07-20,08:00,16:30,PSO2,#e2dc2c,1784350621798
-兄貴,1234,あにき,あにきのばか,https://www.youtube.com/@YouTube,,2026-07-20,14:00,18:00,4時間みっちり、マリオカート,#6e4e45,1784350676221
+id,pin,role,nickname,platform,streamUrl,xUrl,startAt,endAt,bio,color,createdAt
