@@ -6,7 +6,8 @@ const { stringify } = require('csv-stringify/sync');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DATA_DIR = path.join(__dirname, 'data');
+// エントリーCSVの保存先。DATA_DIR で差し替え可（本番の永続ボリュームなど）
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'storage');
 const DATA_FILE = path.join(DATA_DIR, 'entries.csv');
 const HEADERS = ['id', 'pin', 'role', 'nickname', 'platform', 'streamUrl', 'xUrl', 'startAt', 'endAt', 'bio', 'color', 'createdAt'];
 
