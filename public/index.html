@@ -354,7 +354,14 @@
     color:#3a2500; background:linear-gradient(135deg,#ffe08a,#f59e0b);
   }
   .lantern-special b{font-family:'Zen Kaku Gothic New',sans-serif; font-size:16px;}
-  .tt-official-row{display:block; font-size:12.5px; margin:2px 0; opacity:.95; font-weight:600;}
+  .tt-official-row{display:block; font-size:12.5px; margin:2px 0; opacity:.95; font-weight:600; overflow-wrap:anywhere; word-break:break-word;}
+  /* 公式イベントの説明文。会場リンクの上に出る。
+     見た目の大きさを時間（.tt-time）に合わせる。Orbitron は同じ px でも大きく見えるので
+     日本語側は 14px にし、太さは .lantern の 600 を継承させる（400 にすると細くて小さく見える） */
+  .tt-official-desc{
+    display:block; margin:4px 0 6px; font-size:14px; line-height:1.5; opacity:.95;
+    overflow-wrap:anywhere; word-break:break-word;
+  }
   col.tt-officialcol{width:168px;}
   .official-col{vertical-align:top;}
   /* 公式イベントは縦長列なので中身を上寄せ（中央だと画面外に行く） */
@@ -1286,9 +1293,10 @@ async function renderTimetable(){
   let gridHtml = '';
   {
     // 公式イベント（最左列）。表示範囲はフェス全長 or 公式イベント最終時刻の遅い方まで
+    // desc は会場リンクの上に出る説明文。空文字なら行ごと出さない
         const officials = [
-      { nickname:'盆踊り大会', startAt:'2026-08-29T20:00', endAt:'2026-08-29T21:00', venue:'https://www.youtube.com/@korikorio' },
-      { nickname:'エンディング', startAt:'2026-08-30T11:00', endAt:'2026-08-30T11:30', venue:'https://www.youtube.com/@V%E3%81%AE%E3%82%86%E3%81%8D%E3%82%81' },
+      { nickname:'盆踊り大会', startAt:'2026-08-29T20:00', endAt:'2026-08-29T21:00', desc:'10鯖　777777 666666', venue:'https://www.youtube.com/@korikorio' },
+      { nickname:'エンディング', startAt:'2026-08-30T08:00', endAt:'2026-08-30T11:00', desc:'10鯖　777777 666666', venue:'https://www.youtube.com/@V%E3%81%AE%E3%82%86%E3%81%8D%E3%82%81' },
     ];
     let displayLen = FEST_LEN;
     officials.forEach(ev=>{ const e = dtToAbsMin(ev.endAt) - FEST_BASE; if(e > displayLen) displayLen = e; });
@@ -1342,13 +1350,15 @@ async function renderTimetable(){
         const ev = oc.ev;
         const sC = minutesToTime(dtToAbsMin(ev.startAt) % 1440);
         const eC = minutesToTime(dtToAbsMin(ev.endAt) % 1440);
-       const isVenueUrl = ev.venue && /^https?:///i.test(ev.venue);
+        // venue が URL のときは生の URL を出すとカードからはみ出すので、特別企画と同じくリンク化する
+        const isVenueUrl = ev.venue && /^https?:\/\//i.test(ev.venue);
         const venueRow = ev.venue
           ? (isVenueUrl
-              ? <a class="tt-yt" href="${esc(ev.venue)}" target="_blank" rel="noopener">会場はこちら</a>
-              : <span class="tt-official-row">会場：${esc(ev.venue)}</span>)
+              ? `<a class="tt-yt" href="${esc(ev.venue)}" target="_blank" rel="noopener">会場はこちら</a>`
+              : `<span class="tt-official-row">会場：${esc(ev.venue)}</span>`)
           : '';
-        html += `<td class="official-col" rowspan="${oc.rowSpan}"><div class="lantern lantern-special"><span class="tt-badge">🏮 公式イベント</span><b>${esc(ev.nickname)}</b><span class="tt-time">${sC}-${eC}</span>${venueRow}</div></td>`;
+        const descRow = (ev.desc && ev.desc.trim()) ? `<span class="tt-official-desc">${esc(ev.desc)}</span>` : '';
+        html += `<td class="official-col" rowspan="${oc.rowSpan}"><div class="lantern lantern-special"><span class="tt-badge">🏮 公式イベント</span><b>${esc(ev.nickname)}</b><span class="tt-time">${sC}-${eC}</span>${descRow}${venueRow}</div></td>`;
       } else if(oc !== 'skip'){
         html += '<td></td>';
       }
