@@ -1342,7 +1342,7 @@ async function renderTimetable(){
         const ev = oc.ev;
         const sC = minutesToTime(dtToAbsMin(ev.startAt) % 1440);
         const eC = minutesToTime(dtToAbsMin(ev.endAt) % 1440);
-        const isVenueUrl = ev.venue && /^https?:///i.test(ev.venue);
+       const isVenueUrl = ev.venue && /^https?:///i.test(ev.venue);
         const venueRow = ev.venue
           ? (isVenueUrl
               ? <a class="tt-yt" href="${esc(ev.venue)}" target="_blank" rel="noopener">会場はこちら</a>
